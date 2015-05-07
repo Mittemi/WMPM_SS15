@@ -12,14 +12,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class DemoRoute extends RouteBuilder {
 
-   // @Autowired
-   // CamelContext context;
-
     @Override
     public void configure() throws Exception {
         System.out.println("Register route");
 
-        from("timer://foo?period=10s").bean(new DemoPrintTextBean(), "doSomething");
+     //   from("timer://foo?period=10s").bean(new DemoPrintTextBean(), "doSomething");
+
+        from("file://test.txt").to("file://output.txt");
 
     }
 }
