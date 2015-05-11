@@ -1,13 +1,13 @@
 package carrental.beans;
 
-import org.apache.camel.language.Bean;
+import org.apache.camel.Exchange;
 
 /**
  * Created by Michael on 07.05.2015.
  */
 public class DemoPrintTextBean {
 
-    public void doSomething(String content) {
-        System.out.println("We got it!");
+    public void process(String s) {
+        System.out.println("We got it! " + s);
     }
 }
