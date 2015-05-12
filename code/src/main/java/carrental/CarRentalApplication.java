@@ -6,11 +6,13 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /* http://camel.apache.org/spring-boot.html */
 @EnableAutoConfiguration
 @ComponentScan(basePackages = { "carrental.beans" , "carrental.routing" })
 @SpringBootApplication
+@EnableScheduling
 public class CarRentalApplication {
 
     public static void main(String[] args) {
