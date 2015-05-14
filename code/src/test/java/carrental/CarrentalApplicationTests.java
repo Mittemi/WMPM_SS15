@@ -24,10 +24,12 @@ public class CarrentalApplicationTests {
 	@Autowired
 	private CustomerRepository customerRepository;
 
-	@Autowired
+	@Autowired(required = false)
 	//private PickupProtocolRepository pickupProtocolRepository;
 	private ReservationRepository reservationRepository;
 
+	@Autowired
+	private CarRentalConfig carRentalConfig;
 
 	@Test
 	public void testReservation() {
@@ -40,4 +42,9 @@ public class CarrentalApplicationTests {
 		assertNotNull(reservationRepository);
 	}
 
+	@Test
+	public void testConfig() {
+		assertNotNull(carRentalConfig);
+		assertNotNull(carRentalConfig.getReservation());
+	}
 }

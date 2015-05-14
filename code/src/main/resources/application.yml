@@ -22,3 +22,7 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create-drop
+  reservation:
+    mongo:
+      host: 192.168.217.129
+      name: pickupPoint
