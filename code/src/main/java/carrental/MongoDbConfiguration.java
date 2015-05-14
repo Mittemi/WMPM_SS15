@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 /**
  * Created by Michael on 13.05.2015.
@@ -24,13 +23,13 @@ public class MongoDbConfiguration extends AbstractMongoConfiguration {
 
     @Override
     public String getDatabaseName() {
-        return carRentalConfig.getReservation().getMongo().getName();
+        return carRentalConfig.getPickupPoint().getMongo().getName();
     }
 
     @Override
     @Bean
     public Mongo mongo() throws Exception {
         //return new MongoClient(properties.getMongoDBConf().getIpOrHostname());
-        return new MongoClient(carRentalConfig.getReservation().getMongo().getHost());
+        return new MongoClient(carRentalConfig.getPickupPoint().getMongo().getHost());
     }
 }

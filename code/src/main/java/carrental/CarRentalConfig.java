@@ -45,7 +45,7 @@ public class CarRentalConfig {
         }
     }
 
-    public static class Reservation {
+    public static class PickupPoint {
 
         @NotNull
         private Mongo mongo;
@@ -60,7 +60,7 @@ public class CarRentalConfig {
     }
 
     @NotNull
-    private Reservation reservation;
+    private PickupPoint pickupPoint;
 
     @NotNull
     private Billing billing;
@@ -73,11 +73,11 @@ public class CarRentalConfig {
         this.billing = billing;
     }
 
-    public Reservation getReservation() {
-        return reservation;
+    public PickupPoint getPickupPoint() {
+        return pickupPoint;
     }
 
-    public void setReservation(Reservation reservation) {
-        this.reservation = reservation;
+    public void setPickupPoint(PickupPoint pickupPoint) {
+        this.pickupPoint = pickupPoint;
     }
 }

@@ -22,14 +22,15 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create-drop
-  reservation:
+  pickupPoint:
     mongo:
       host: 192.168.217.129
-      name: pickupPoint
+      name: carrental
   billing:
     mongo:
       host: 192.168.217.129
-      name: billing
+      name: carrental
+
 ---
 spring:
   profiles: consti
@@ -50,11 +51,11 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create-drop
-  reservation:
+  pickupPoint:
     mongo:
       host: 192.168.217.129
-      name: pickupPoint
+      name: carrental
   billing:
     mongo:
       host: 192.168.217.129
-      name: billing
+      name: carrental

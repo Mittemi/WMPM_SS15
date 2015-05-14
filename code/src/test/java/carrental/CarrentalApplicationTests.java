@@ -1,6 +1,5 @@
 package carrental;
 
-import carrental.repository.pickupPoint.PickupProtocolRepository;
 import carrental.repository.pickupPoint.ReservationRepository;
 import carrental.repository.reservation.CustomerRepository;
 import org.junit.Test;
@@ -24,7 +23,7 @@ public class CarrentalApplicationTests {
 	@Autowired
 	private CustomerRepository customerRepository;
 
-	@Autowired(required = false)
+	@Autowired
 	//private PickupProtocolRepository pickupProtocolRepository;
 	private ReservationRepository reservationRepository;
 
@@ -45,6 +44,6 @@ public class CarrentalApplicationTests {
 	@Test
 	public void testConfig() {
 		assertNotNull(carRentalConfig);
-		assertNotNull(carRentalConfig.getReservation());
+		assertNotNull(carRentalConfig.getPickupPoint());
 	}
 }
