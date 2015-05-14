@@ -17,7 +17,7 @@ public class DemoInvoiceProcessor {
     @Autowired
     private ProducerTemplate producerTemplate;
 
-    @Scheduled(fixedRate = 2500)
+    //@Scheduled(fixedRate = 2500)
     public void processNextInvoice() {
             producerTemplate.sendBody("activemq:queue:invoices", "This is a test invoice! sent at: " + new Date());
     }

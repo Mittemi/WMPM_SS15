@@ -18,6 +18,8 @@ public class Car extends AbstractPersistable<Long> {
     private String licensePlate;
     private String color;
     private int power;
+    private CarState carState;
+
 
     @OneToMany(mappedBy = "car", targetEntity = carrental.model.reservation.Reservation.class)
     private List<Reservation> reservations;
@@ -25,7 +27,26 @@ public class Car extends AbstractPersistable<Long> {
     public Car() {
         reservations = new LinkedList<>();
     }
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
 
+    public Car(String description, String licensePlate, String color, int power, CarState carState) {
+        this();
+        this.description = description;
+        this.licensePlate = licensePlate;
+        this.color = color;
+        this.power = power;
+        this.carState = carState;
+    }
+
+    public CarState getCarState() {
+        return carState;
+    }
+
+    public void setCarState(CarState carState) {
+        this.carState = carState;
+    }
     public String getDescription() {
         return description;
     }

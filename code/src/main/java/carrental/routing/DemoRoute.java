@@ -17,7 +17,7 @@ public class DemoRoute extends RouteBuilder {
     @Override
     public void configure() throws Exception {
         System.out.println("Register route");
-        from("timer://foo?period=5000").setBody().constant("Hello there").log("Message: ${body}").to("direct:starting");
+        from("timer://foo?period=50000").setBody().constant("Hello there").log("Message: ${body}").to("direct:starting");
         from("file://inbox?noop=true").process(new Processor() {
 			
 			@Override
