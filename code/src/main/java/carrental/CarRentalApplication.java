@@ -13,9 +13,6 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 /* http://camel.apache.org/spring-boot.html */
-@EnableAutoConfiguration
-@ComponentScan(basePackages = { "carrental", "carrental.beans" , "carrental.routing",
-        "carrental.repository.billing", "carrental.repository.reservation", "carrental.repository.pickupPoint" })
 @EntityScan(basePackages = { "carrental.model.reservation" })       //jpa only
 @SpringBootApplication
 @EnableScheduling

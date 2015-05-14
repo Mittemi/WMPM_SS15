@@ -1,7 +1,6 @@
 package carrental.model.reservation;
 
 import carrental.Constants;
-import carrental.model.Reservation;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 import scala.util.parsing.combinator.testing.Str;
 

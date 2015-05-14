@@ -12,7 +12,6 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
  * Created by Michael on 13.05.2015.
  */
 @Configuration
-@EnableMongoRepositories
 /*
 One time only: docker run --name mongo -d -v /mongo -p 27017:27017 -p 28017:28017 -e AUTH=no tutum/mongodb
 Start: docker start mongo

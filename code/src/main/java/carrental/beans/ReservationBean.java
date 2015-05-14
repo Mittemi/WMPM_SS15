@@ -1,6 +1,7 @@
 package carrental.beans;
 
-import carrental.model.Reservation;
+
+import carrental.model.reservation.Reservation;
 import org.apache.camel.ProducerTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
