@@ -1,6 +1,7 @@
-package carrental.routing;
+package carrental.routing.returnPoint;
 
 import carrental.beans.DemoPrintTextBean;
+import carrental.beans.returnPoint.CarReturnProcessor;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
@@ -20,5 +21,7 @@ public class CarInspectionRoute extends RouteBuilder {
                 .unmarshal()
                 .bindy(BindyType.Csv, "carrental.model")
                 .to("mock:update");
+
+        from("activemq:queue:CarHandedOverQueue").process(new CarReturnProcessor());
     }
 }

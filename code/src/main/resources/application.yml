@@ -1,7 +1,7 @@
 server:
      port: 9000
 spring:
-  profiles.active: default
+  profiles.active: consti
 ---
 spring:
   profiles: default
@@ -37,12 +37,12 @@ spring:
   datasource:
     reservation:
       driverClassName: org.postgresql.Driver
-      url: jdbc:postgresql://192.168.217.129:5432/carrental
+      url: jdbc:postgresql://192.168.59.103:5432/carrental
       username: postgres
       password: passme
     test:
       driverClassName: org.postgresql.Driver
-      url: jdbc:postgresql://192.168.217.129:5432/carrental
+      url: jdbc:postgresql://192.168.59.103:5432/carrental
       username: postgres
       password: passme2
   jpa:
@@ -53,9 +53,9 @@ spring:
       ddl-auto: create-drop
   pickupPoint:
     mongo:
-      host: 192.168.217.129
+      host: 192.168.59.103
       name: carrental
   billing:
     mongo:
-      host: 192.168.217.129
+      host: 192.168.59.103
       name: carrental
