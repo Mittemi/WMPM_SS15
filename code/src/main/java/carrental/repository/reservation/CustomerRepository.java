@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 /**
  * Created by Michael on 13.05.2015.
@@ -13,4 +14,6 @@ import javax.persistence.PersistenceContext;
 @Repository
 @PersistenceContext(unitName= Constants.RESERVATION_PU)
 public interface CustomerRepository extends CrudRepository<Customer, Long> {
+
+    List<Customer> findByName(String name);
 }
