@@ -9,8 +9,21 @@ public class Claim {
 
     private ClaimType claimType;
 
-    @Id
-    private Long id;
-
     private String description;
+
+    public ClaimType getClaimType() {
+        return claimType;
+    }
+
+    public void setClaimType(ClaimType claimType) {
+        this.claimType = claimType;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
