@@ -2,6 +2,7 @@ package carrental.model.billing;
 
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 import java.util.LinkedList;
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * Created by Michael on 13.05.2015.
  */
-
+@Document(collection = "invoice")
 public class Invoice  {
 
     @Id

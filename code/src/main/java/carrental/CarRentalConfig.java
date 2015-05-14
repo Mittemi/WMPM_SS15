@@ -31,6 +31,20 @@ public class CarRentalConfig {
         }
     }
 
+    public static class Billing {
+
+        @NotNull
+        private Mongo mongo;
+
+        public Mongo getMongo() {
+            return mongo;
+        }
+
+        public void setMongo(Mongo mongo) {
+            this.mongo = mongo;
+        }
+    }
+
     public static class Reservation {
 
         @NotNull
@@ -47,6 +61,17 @@ public class CarRentalConfig {
 
     @NotNull
     private Reservation reservation;
+
+    @NotNull
+    private Billing billing;
+
+    public Billing getBilling() {
+        return billing;
+    }
+
+    public void setBilling(Billing billing) {
+        this.billing = billing;
+    }
 
     public Reservation getReservation() {
         return reservation;

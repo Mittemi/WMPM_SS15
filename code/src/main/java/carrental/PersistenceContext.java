@@ -21,6 +21,13 @@ import java.util.Properties;
 @EnableJpaRepositories
 public class PersistenceContext {
 
+/*
+First time only: docker run --name wmpmPostgres -v /wmpmPsql -p 5432:5432 -d -e "POSTGRES_PASSWORD=passme" postgres
+Start: docker start wmpmPostgres
+Stop: docker stop wmpmPostgres
+
+ */
+
 
     @Bean
     @Primary
