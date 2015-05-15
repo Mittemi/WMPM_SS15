@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.PersistenceContext;
 
 /**
- * Created by Michael on 13.05.2015.
+ * Created by Thomas on 14.05.2015.
  */
 @Repository
 @PersistenceContext(unitName= Constants.RESERVATION_PU)
-public interface ReservationRepository extends CrudRepository<carrental.model.reservation.Reservation, Long> {
+public interface ReserveRepository  extends CrudRepository<Reservation, Long> {
 }

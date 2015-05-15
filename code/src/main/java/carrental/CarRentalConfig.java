@@ -50,6 +50,9 @@ public class CarRentalConfig {
         @NotNull
         private Mongo mongo;
 
+        @NotNull
+        private Integer customerEntryTime;
+
         public Mongo getMongo() {
             return mongo;
         }

@@ -1,6 +1,6 @@
 package carrental.repository.pickupPoint;
 
-import carrental.model.pickupPoint.Reservation;
+import carrental.model.reservation.Reservation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
