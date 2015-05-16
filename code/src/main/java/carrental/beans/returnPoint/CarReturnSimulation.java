@@ -1,9 +1,6 @@
 package carrental.beans.returnPoint;
 
-import carrental.model.pickupPoint.Claim;
-import carrental.model.pickupPoint.ClaimType;
-import carrental.model.pickupPoint.PickupProtocol;
-import carrental.model.pickupPoint.Reservation;
+import carrental.model.pickupPoint.*;
 import carrental.repository.reservation.CustomerRepository;
 import carrental.repository.reservation.ReservationRepository;
 import org.apache.camel.ProducerTemplate;
@@ -40,23 +37,40 @@ public class CarReturnSimulation {
 
         Reservation reservation = new Reservation();
         reservation.setId(1L);
-        reservation.setCarId(1L);
+        reservation.setCarId(CarSimulation.getNewCarId());
         reservation.setCustomerId(1L);
-        String testDate = "29-Apr-2015,13:00:14";
-        DateFormat formatter = new SimpleDateFormat("d-MMM-yyyy,HH:mm:ss");
-        Date date=new Date();
+        String reservationDateString = "29-Apr-2015,13:00";
+        String pickupDateString = "30-Apr-2015,13:00";
+        DateFormat formatter = new SimpleDateFormat("d-MMM-yyyy,HH:mm");
+        Date reservationDate=new Date();
+        Date pickupDate = new Date();
         try {
-             date = formatter.parse(testDate);
+             reservationDate = formatter.parse(reservationDateString);
+            pickupDate= formatter.parse(pickupDateString);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        reservation.setReservationDate(date);
+        reservation.setReservationDate(reservationDate);
         pickupProtocol.setReservation(reservation);
-        pickupProtocol.setPickupDate(new Date());
+        pickupProtocol.setPickupDate(pickupDate);
 
-        System.out.println("Simulated Car handed over");
-        producerTemplate.sendBody("activemq:queue:CarHandedOverQueue",pickupProtocol);
+        System.out.println("Simulated Car Handed over and Pickup protocol forwarded to Car Return Point");
+        producerTemplate.sendBodyAndHeader("seda:queue:carToInspectQueue",pickupProtocol,"carId",pickupProtocol.getReservation().getCarId());
 
+
+    }
+    @Scheduled(fixedRate = 3000)
+    public void carReturned()
+    {
+        if(!CarQueue.listOfPickups.isEmpty())
+        {
+            PickupProtocol pickupProtocol = CarQueue.listOfPickups.getFirst();
+            CarQueue.listOfPickups.removeFirst();
+            ReturnProtocol returnProtocol = new ReturnProtocol();
+            returnProtocol.setId(pickupProtocol.getReservation().getCarId());
+            System.out.println("Car with id " + pickupProtocol.getReservation().getCarId() + "arrived at return point");
+            producerTemplate.sendBodyAndHeader("seda:queue:carToInspectQueue", returnProtocol, "carId", pickupProtocol.getReservation().getCarId());
+        }
     }
 
 }

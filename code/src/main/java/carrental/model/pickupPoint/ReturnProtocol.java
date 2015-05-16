@@ -3,6 +3,7 @@ package carrental.model.pickupPoint;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,6 +19,8 @@ public class ReturnProtocol {
     private Reservation reservation;
 
     private List<Claim> claims;
+
+    private Date returnDate;
 
     public Long getId() {
         return id;
@@ -41,5 +44,13 @@ public class ReturnProtocol {
 
     public void setClaims(List<Claim> claims) {
         this.claims = claims;
+    }
+
+    public Date getReturnDate() {
+        return returnDate;
+    }
+
+    public void setReturnDate(Date returnDate) {
+        this.returnDate = returnDate;
     }
 }

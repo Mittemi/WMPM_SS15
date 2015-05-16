@@ -1,9 +1,8 @@
 package carrental.routing.returnPoint;
 
-import carrental.beans.DemoPrintTextBean;
-import carrental.beans.returnPoint.CarReturnProcessor;
-import org.apache.camel.Exchange;
-import org.apache.camel.Processor;
+import carrental.beans.returnPoint.AddExpectedReturnProcessor;
+import carrental.beans.returnPoint.AggregationStrategyCarReturn;
+import carrental.beans.returnPoint.CarInspectionProcessor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.dataformat.BindyType;
 import org.springframework.stereotype.Component;
@@ -22,6 +21,7 @@ public class CarInspectionRoute extends RouteBuilder {
                 .bindy(BindyType.Csv, "carrental.model")
                 .to("mock:update");
 
-        from("activemq:queue:CarHandedOverQueue").process(new CarReturnProcessor());
+        from("seda:queue:carToInspectQueue").process(new AddExpectedReturnProcessor()).aggregate(header("carId"), new AggregationStrategyCarReturn()).completionSize(2).to("direct:endpoint");
+        from("direct:endpoint").process(new CarInspectionProcessor());
     }
 }
