@@ -6,4 +6,5 @@ package carrental;
 public class Constants {
     public static final String RESERVATION_PU = "reservation";
 
+    public static final boolean ENABLE_CAR_RETURN = false;
 }

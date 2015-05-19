@@ -1,5 +1,6 @@
 package carrental.beans.returnPoint;
 
+import carrental.Constants;
 import carrental.model.pickupPoint.*;
 import carrental.repository.reservation.CustomerRepository;
 import carrental.repository.reservation.ReservationRepository;
@@ -25,6 +26,8 @@ public class CarReturnSimulation {
     @Scheduled(fixedRate = 2500)
     public void carHandedOver()
     {
+        if(Constants.ENABLE_CAR_RETURN) return; // no simulation use real one
+
         PickupProtocol pickupProtocol = new PickupProtocol();
         pickupProtocol.setId(1L);
 
@@ -62,6 +65,8 @@ public class CarReturnSimulation {
     @Scheduled(fixedRate = 3000)
     public void carReturned()
     {
+        if(Constants.ENABLE_CAR_RETURN) return; // no simulation use real one
+
         if(!CarQueue.listOfPickups.isEmpty())
         {
             PickupProtocol pickupProtocol = CarQueue.listOfPickups.getFirst();

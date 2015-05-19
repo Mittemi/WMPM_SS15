@@ -85,13 +85,33 @@
 			<version>5.6.0</version>
 		</dependency>
 
+		<!--MongoDB, JPA-->
+
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-mongodb</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jpa</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
+
+		<!--Marshal XML/Json -->
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-xstream</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
+
 		<!-- when using Bindy data format -->
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-bindy</artifactId>
 			<version>${camel-version}</version>
 		</dependency>
-
 	</dependencies>
 	
 	<build>

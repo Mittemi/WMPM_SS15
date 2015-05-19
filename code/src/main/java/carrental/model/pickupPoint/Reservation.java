@@ -15,6 +15,8 @@ public class Reservation {
 
     private Long customerId;
 
+    private Long reservationId;
+
     @Id
     private Long id;
 
@@ -50,5 +52,18 @@ public class Reservation {
 
     public void setReservationDate(Date reservationDate) {
         this.reservationDate = reservationDate;
+    }
+
+    public Long getReservationId() {
+        return reservationId;
+    }
+
+    public void setReservationId(Long reservationId) {
+        this.reservationId = reservationId;
+    }
+
+    @Override
+    public String toString() {
+        return "Reservation [" + this.getId() + ", Car: " + this.getCarId() + ", Reservation: " + this.getReservationId() + ", Customer: " + this.getCustomerId() + "]";
     }
 }

@@ -1,5 +1,6 @@
 package carrental;
 
+import carrental.repository.pickupPoint.ReservationRepository;
 import org.apache.camel.spring.boot.CamelSpringBootApplicationController;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -21,6 +22,11 @@ public class CarRentalApplication {
 
     public static void main(String[] args) {
         ApplicationContext applicationContext = new SpringApplication(CarRentalApplication.class).run(args);
+
+        //CLEAN-UP
+        ReservationRepository r = applicationContext.getBean(ReservationRepository.class);
+        r.deleteAll();
+
         CamelSpringBootApplicationController applicationController =
                 applicationContext.getBean(CamelSpringBootApplicationController.class);
         applicationController.blockMainThread();

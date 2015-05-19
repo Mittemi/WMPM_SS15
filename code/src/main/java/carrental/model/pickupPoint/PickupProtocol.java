@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Michael on 13.05.2015.
@@ -59,5 +60,10 @@ public class PickupProtocol  {
 
     public void setClaims(List<Claim> claims) {
         this.claims = claims;
+    }
+
+    @Override
+    public String toString() {
+        return "PickupProtocol (" + this.getId() + "): Reservation-ID:" + this.getReservation().getReservationId() + " [" + this.claims.stream().map(x -> x.toString()).collect(Collectors.joining(", ")) + "]";
     }
 }

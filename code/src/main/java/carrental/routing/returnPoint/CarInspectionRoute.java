@@ -15,13 +15,16 @@ public class CarInspectionRoute extends RouteBuilder {
     @Override
     public void configure() throws Exception {
 
+//TODO:  cfr creates errors, check that!
+/*
         from("file://claimlists?noop=true").split(body().tokenize("\n"))
                 .log("Line: ${body}")
                 .unmarshal()
                 .bindy(BindyType.Csv, "carrental.model")
-                .to("mock:update");
+                .to("mock:update");*/
 
         from("seda:queue:carToInspectQueue").process(new AddExpectedReturnProcessor()).aggregate(header("carId"), new AggregationStrategyCarReturn()).completionSize(2).to("direct:endpoint");
+        // guess what, the name should be unique: endpoint really does a good work concerning that ;)
         from("direct:endpoint").process(new CarInspectionProcessor());
     }
 }

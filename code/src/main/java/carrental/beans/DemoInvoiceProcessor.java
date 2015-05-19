@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * Created by Thomas on 12.05.2015.
  */
-@Component
+//@Component
 public class DemoInvoiceProcessor {
 
     @Autowired
