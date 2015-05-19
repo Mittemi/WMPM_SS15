@@ -46,7 +46,11 @@ public class StartPickupRoute extends RouteBuilder {
                 })
                 .to(mongoEndpointString).log("Pickup protocol created: ${body}");
 
-        if(Constants.ENABLE_CAR_RETURN)
+        if(Constants.ENABLE_CAR_RETURN) {
             routeDefinition.to("seda:pickupPoint.CarReturn.internal");
+        }
+        else {
+            routeDefinition.log("Process would return car: ${body}");
+        }
     }
 }
