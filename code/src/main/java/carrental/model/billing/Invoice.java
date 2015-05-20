@@ -8,9 +8,13 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Created by Michael on 13.05.2015.
  */
+@XmlRootElement
 @Document(collection = "invoice")
 public class Invoice  {
 
@@ -30,7 +34,8 @@ public class Invoice  {
     public Invoice() {
         claims = new LinkedList<>();
     }
-
+    
+    @XmlElement
     public Long getId() {
         return id;
     }
@@ -46,7 +51,8 @@ public class Invoice  {
     public void setClaims(List<Claim> claims) {
         this.claims = claims;
     }
-
+    
+    @XmlElement
     public String getCustomer() {
         return customer;
     }
@@ -54,7 +60,8 @@ public class Invoice  {
     public void setCustomer(String customer) {
         this.customer = customer;
     }
-
+    
+    @XmlElement
     public String getAddress() {
         return address;
     }
@@ -63,6 +70,7 @@ public class Invoice  {
         this.address = address;
     }
 
+    @XmlElement
     public Date getDate() {
         return date;
     }
@@ -71,6 +79,7 @@ public class Invoice  {
         this.date = date;
     }
 
+    @XmlElement
     public int getNumber() {
         return number;
     }
