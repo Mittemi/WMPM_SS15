@@ -25,6 +25,8 @@ public class CarInspectionRoute extends RouteBuilder {
 
         from("seda:queue:carToInspectQueue").process(new AddExpectedReturnProcessor()).aggregate(header("carId"), new AggregationStrategyCarReturn()).completionSize(2).to("direct:endpoint");
         // guess what, the name should be unique: endpoint really does a good work concerning that ;)
-        from("direct:endpoint").process(new CarInspectionProcessor());
+        
+        //commented-out by Alex for BillingRoute-purposes
+        //from("direct:endpoint").process(new CarInspectionProcessor());
     }
 }
