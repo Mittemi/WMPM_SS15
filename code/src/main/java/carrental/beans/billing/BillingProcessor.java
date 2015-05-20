@@ -16,7 +16,7 @@ public class BillingProcessor  implements Processor{
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		ReturnProtocol protocol = exchange.getIn().getBody(ReturnProtocol.class);
-        System.out.println("Retrun Protocol arrived in Billing-Department, ID="+protocol.getId()+"Claims: ");
+        System.out.println("Retrun Protocol arrived in Billing-Department, ID="+protocol.getId());
         
         //Create invoice and transform model.pickupPoint.Claims into model.billing.Claims
         Invoice invoice=new Invoice();
@@ -37,7 +37,7 @@ public class BillingProcessor  implements Processor{
         
         invoice.setClaims(billingClaims);
         
-        System.out.println("Invoice (Id:"+invoice.getId()+", Nr:"+invoice.getNumber()+") created. Claims:");
+        System.out.println("Invoice (Id:"+invoice.getId()+", Nr:"+invoice.getNumber()+") created. \nClaims:");
         BigDecimal sumcosts=new BigDecimal(0);
         
         for(carrental.model.billing.Claim billingClaim:invoice.getClaims()){
