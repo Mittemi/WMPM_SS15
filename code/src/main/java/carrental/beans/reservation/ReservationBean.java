@@ -1,4 +1,4 @@
-package carrental.beans;
+package carrental.beans.reservation;
 
 
 import carrental.CarRentalConfig;
@@ -60,7 +60,7 @@ public class ReservationBean {
         carRepo.save(car5);
     }
 
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(fixedDelay = 120000)
     public void onCustomerEntersStore() {
         System.out.println("Reservation: Customer entered store.");
         boolean available;
@@ -164,6 +164,7 @@ public class ReservationBean {
      */
     private void reserveCar(Reservation reservation, Car car) {
         reservation.setCar(car);
+        reservation.setDate(new Date());
         car.setCarState(CarState.RESERVED);
         customerRepo.save(reservation.getCustomer());
         carRepo.save(car);

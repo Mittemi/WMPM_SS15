@@ -1,7 +1,7 @@
 server:
      port: 9000
 spring:
-  profiles.active: alex
+  profiles.active: thi
 logging:
   level:
     org:
@@ -67,22 +67,22 @@ spring:
       name: carrental
 ---
 spring:
-  profiles: alex
+  profiles: thi
   datasource:
     reservation:
       driverClassName: org.postgresql.Driver
-      url: jdbc:postgresql://localhost:5432/carrental
+      url: jdbc:postgresql://192.168.59.103:5432/carrental
       username: postgres
       password: passme
     test:
       driverClassName: org.postgresql.Driver
-      url: jdbc:postgresql://192.168.217.129:5432/carrental
+      url: jdbc:postgresql://192.168.59.103:5432/carrental
       username: postgres
       password: passme2
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: true
-    show-sql: false
+    show-sql: true
     hibernate:
       ddl-auto: create-drop
   pickupPoint:
