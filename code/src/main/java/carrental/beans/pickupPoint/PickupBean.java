@@ -18,6 +18,9 @@ import java.util.Random;
 
 /**
  * Created by Michael on 23.05.2015.
+ * Bean simulating the application at the pickup point.
+ *
+ * Creates a PickupProtocol and adds a random number of claims. Might
  */
 @Component
 public class PickupBean {
@@ -33,7 +36,7 @@ public class PickupBean {
         PickupProtocol pickupProtocol = new PickupProtocol();
         pickupProtocol.setReservation(reservation);
 
-        System.out.println("Showing the car to the customer");
+        System.out.println("Showing the car to the customer...");
         pickupProtocol.setClaims(generateClaims());
         if(pickupProtocol.getClaims().size() > 0) {
             System.out.println("Claims:");
@@ -61,25 +64,43 @@ public class PickupBean {
 
         List<Claim> claimList = new LinkedList<>();
 
+        boolean[] used = new boolean[5];
+
         while(random.nextBoolean()) {
 
-            switch (random.nextInt(5)) {
+            switch (random.nextInt(used.length + 1)) {
                 case 0:
-                    claimList.add(new Claim(ClaimType.Cleaning, "Car requires cleaning, still dirty!"));
+                    used[0] = true;
+                    if(!used[0]) {
+                        claimList.add(new Claim(ClaimType.Cleaning, "Car requires cleaning, still dirty!"));
+                    }
                     break;
                 case 1:
-                    claimList.add(new Claim(ClaimType.Electrical, "Lights are not working"));
+                    used[1] = true;
+                    if(!used[1]) {
+                        claimList.add(new Claim(ClaimType.Electrical, "Lights are not working"));
+                    }
                     break;
                 case 2:
-                    claimList.add(new Claim(ClaimType.Mechanical, "Control lamp indicates error!"));
+                    used[2] = true;
+                    if(!used[2]) {
+                        claimList.add(new Claim(ClaimType.Mechanical, "Control lamp indicates error!"));
+                    }
                     break;
                 case 3:
-                    claimList.add(new Claim(ClaimType.Refilling, "Someone forgot to refill!"));
+                    used[3] = true;
+                    if(!used[3]) {
+                        claimList.add(new Claim(ClaimType.Refilling, "Someone forgot to refill!"));
+                    }
                     break;
                 case 4:
-                    claimList.add(new Claim(ClaimType.Paintwork, "Don't know what they thought when the accepted this car during return!"));
+                    used[4] = true;
+                    if(!used[4]) {
+                        claimList.add(new Claim(ClaimType.Paintwork, "Don't know what they thought when they accepted this car during return!"));
+                    }
+                    break;
                 default:
-                        break;
+                    break;
             }
         }
         return claimList;
