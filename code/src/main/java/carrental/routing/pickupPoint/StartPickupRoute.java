@@ -35,15 +35,8 @@ public class StartPickupRoute extends RouteBuilder {
 
         String mongoEndpointString = "mongodb:mongo?database=" + config.getPickupPoint().getMongo().getName() +"&collection=pickupProtocols&operation=save&writeResultAsHeader=true";
 
-        RouteDefinition routeDefinition = from("direct:pickupPoint.PickupProtocol").log("Create pickup protocol for: ${body}")
+        from("direct:pickupPoint.PickupProtocol").log("Create pickup protocol for: ${body}")
                 .bean(PickupBean.class, "showCar(carrental.model.pickupPoint.Reservation)")
-                .to(mongoEndpointString);//.log("Pickup protocol created: ${body}");
-
-        /*if(Constants.ENABLE_CAR_RETURN) {
-            routeDefinition.to("seda:pickupPoint.CarReturn.internal");
-        }
-        else {
-            routeDefinition.log("Process would return car: ${body}");
-        }*/
+                .to(mongoEndpointString);
     }
 }

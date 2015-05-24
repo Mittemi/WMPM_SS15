@@ -30,30 +30,34 @@ public class PickupBean {
 
     private Random random = new Random(new Date().getTime());
 
+    private void println(String str) {
+        System.out.println("PickupPoint: " + str);
+    }
+
 
     public void showCar(Reservation reservation) {
 
         PickupProtocol pickupProtocol = new PickupProtocol();
         pickupProtocol.setReservation(reservation);
 
-        System.out.println("Showing the car to the customer...");
+        println("Showing the car to the customer...");
         pickupProtocol.setClaims(generateClaims());
         if(pickupProtocol.getClaims().size() > 0) {
-            System.out.println("Claims:");
+            println("Claims:");
             for (Claim claim : pickupProtocol.getClaims()) {
-                System.out.println(" - " + claim.toString());
+                println(" - " + claim.toString());
             }
         }
         pickupProtocol.setPickupDate(new Date());
 
         if(random.nextInt(100) < 10) {
             pickupProtocol.setCanceledPickup(true);
-            System.out.println("Customer refuses to take this car! Cancel the pickup...");
+            println("Customer refuses to take this car! Cancel the pickup...");
             if(Constants.ENABLE_CANCEL_PICKUP) {
                 producerTemplate.sendBody("direct:pickupPoint.cancel", pickupProtocol);
             }
         }else {
-            System.out.println("Pickup done, have a safe trip...");
+            println("Pickup done, have a safe trip...");
             if(Constants.ENABLE_CAR_RETURN) {
                 producerTemplate.sendBodyAndHeader("seda:queue:carToInspectQueue", pickupProtocol, "carId", pickupProtocol.getReservation().getCarId());        //notify return process that another car is expected to return in future#
             }
