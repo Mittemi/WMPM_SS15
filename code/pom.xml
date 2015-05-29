@@ -112,6 +112,21 @@
 			<artifactId>camel-bindy</artifactId>
 			<version>${camel-version}</version>
 		</dependency>
+		
+		<!-- IText, A Free Java PDF Library » 5.5.6 -->
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>itextpdf</artifactId>
+			<version>5.5.6</version>
+		</dependency>
+		
+		<!--  jaxb 
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jaxb</artifactId>
+			<version>2.7.1</version>
+		</dependency>
+		-->
 	</dependencies>
 	
 	<build>
