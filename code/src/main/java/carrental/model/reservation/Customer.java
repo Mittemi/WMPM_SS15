@@ -36,6 +36,14 @@ public class Customer extends AbstractPersistable<Long> {
         reservations = new LinkedList<>();
     }
 
+    public Customer(String name, String address, Date birthday, Sex sex, String drivingLicense) {
+        this.name = name;
+        this.address = address;
+        this.birthday = birthday;
+        this.sex = sex;
+        this.drivingLicense = drivingLicense;
+    }
+
     public String getName() {
         return name;
     }

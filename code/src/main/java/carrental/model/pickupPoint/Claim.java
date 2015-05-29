@@ -7,6 +7,14 @@ import org.springframework.data.annotation.Id;
  */
 public class Claim {
 
+    public Claim() {
+    }
+
+    public Claim(ClaimType claimType, String description) {
+        this.claimType = claimType;
+        this.description = description;
+    }
+
     private ClaimType claimType;
 
     private String description;
