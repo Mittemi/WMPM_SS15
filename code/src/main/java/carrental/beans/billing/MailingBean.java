@@ -38,7 +38,7 @@ public class MailingBean {
 		DefaultAuthenticator defaultAuthenticator=new DefaultAuthenticator("username","password");  //enter correct pw
 			
 		Session session = Session.getDefaultInstance( props , defaultAuthenticator); 
-		
+			//mail-account: carrentalag@gmx.at, pw=12345678
 			final MailEndpoint ep = (MailEndpoint) camelContext.getEndpoint("smtp://mail.student.tuwien.ac.at:587?to=carrentalag@gmx.at"); 
 			ep.getConfiguration().setSession(session);		
 			Exchange exchangeMail=ep.createExchange();

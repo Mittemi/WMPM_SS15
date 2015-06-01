@@ -4,16 +4,12 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Random;
-
-import javax.annotation.Resource;
 
 import org.apache.camel.Exchange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import carrental.beans.reservation.CarDTO;
 import carrental.model.billing.Invoice;
@@ -37,8 +33,7 @@ public class BillingBean {
 	@Autowired
 	CarRepository carRepo;
 	
-	//@Autowired
-	//private static RestTemplate restClient=new RestTemplate();
+	private static RestTemplate restClient=new RestTemplate();
 	
 	
 	public void createInvoice(Exchange exchange){
@@ -46,8 +41,7 @@ public class BillingBean {
         System.out.println("Return Protocol arrived in Billing-Department, ID="+protocol.getId());
         
         //update the availabilityState of the returned car
-        Car car=carRepo.findOne(protocol.getReservation().getCarId());
-        setCarAvailable(car.getLicensePlate());
+        setCarAvailable(carRepo.findOne(protocol.getReservation().getCarId()).getLicensePlate());
         
         //Create invoice and transform model.pickupPoint.Claims into model.billing.Claims
         Invoice invoice=new Invoice();
@@ -88,13 +82,9 @@ public class BillingBean {
 		return new BigDecimal(r).setScale(2, RoundingMode.FLOOR);
 	}
 	
-	private static void setCarAvailable(String licensePlate){  //TODO: Figure out how to impl. rest service, restclient, etc..
-		//Map<String, Object> params = new HashMap<String,Object>();
-		//params.put("licensePlate", licensePlate);
-		//params.put("carState", "CarState.AVAILABLE"); 
-		//http://localhost:9001/demo?preferredPerimeter=230&doctorId=d1@dse.at"
-		//String url = "http://localhost:9001/availability?licensePlate="+licensePlate+"&carState="+"CarState.AVAILABLE";
-		//System.out.println("BillingBean(98): restClient.getForObject...: "+restClient.getForObject(url, CarDTO.class));
+	private static void setCarAvailable(String licensePlate){  
+		String url = "http://127.0.0.1:9000/availability?licensePlate="+licensePlate+"&state=AVAILABLE";
+		restClient.getForObject(url, CarDTO.class);
 	}
 	
 }
