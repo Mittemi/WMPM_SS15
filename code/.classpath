@@ -28,5 +28,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/itextpdf-5.5.6.jar"/>
+	<classpathentry kind="lib" path="lib/camel-mail-2.15.2.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

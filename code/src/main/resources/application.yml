@@ -1,7 +1,7 @@
 server:
      port: 9000
 spring:
-  profiles.active: thi
+  profiles.active: alex
 logging:
   level:
     org:
@@ -93,3 +93,32 @@ spring:
     mongo:
       host: 192.168.59.103
       name: carrental
+---
+spring:
+  profiles: alex
+  datasource:
+    reservation:
+      driverClassName: org.postgresql.Driver
+      url: jdbc:postgresql://localhost:5432/carrental
+      username: postgres
+      password: passme
+    test:
+      driverClassName: org.postgresql.Driver
+      url: jdbc:postgresql://localhost:5432/carrental
+      username: postgres
+      password: passme2
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+  pickupPoint:
+    mongo:
+      host: 192.168.59.103
+      name: carrental
+  billing:
+    mongo:
+      host: 192.168.59.103
+      name: carrental
+

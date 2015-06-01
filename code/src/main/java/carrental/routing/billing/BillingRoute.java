@@ -1,37 +1,25 @@
 package carrental.routing.billing;
 
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.model.dataformat.JaxbDataFormat;
-import org.apache.camel.spi.DataFormat;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import carrental.beans.billing.BillingProcessor;
-import carrental.beans.billing.TestProcessor;
-import carrental.beans.returnPoint.CarInspectionProcessor;
-
-import java.io.File;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-
-import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.spi.DataFormat;
+import carrental.CarRentalConfig;
+import carrental.beans.billing.MailingBean;
+import carrental.beans.billing.PrintBean;
+import carrental.beans.billing.BillingBean;
 
 /**
  * Created by Alexander on 20.05.2015
  */
 @Component
 public class BillingRoute  extends RouteBuilder{
-
+	@Autowired
+	private CarRentalConfig config;
+	
 	@Override
 	public void configure() throws Exception {
-		// TODO Auto-generated method stub
-		//JaxbDataFormat jaxb = new JaxbDataFormat(); 
-		from("direct:endpoint").process(new BillingProcessor()).to("direct:endpoint2");
-		from("direct:endpoint2").process(new TestProcessor());
-		//.marshal(jaxb).to("direct:endpoint2"); 
-		//from("direct:endpoint2").marshal().jaxb();
+		String mongoEndpointString = "mongodb:mongo?database=" + config.getBilling().getMongo().getName() +"&collection=invoice&operation=save&writeResultAsHeader=true";
+		from("direct:endpoint").bean(BillingBean.class).wireTap(mongoEndpointString).bean(PrintBean.class).bean(MailingBean.class);		
 	}
 
 }
