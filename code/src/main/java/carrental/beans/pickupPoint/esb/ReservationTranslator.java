@@ -1,4 +1,4 @@
-package carrental.beans.pickupPoint;
+package carrental.beans.pickupPoint.esb;
 
 import carrental.model.pickupPoint.Reservation;
 
@@ -8,6 +8,8 @@ import carrental.model.pickupPoint.Reservation;
 public class ReservationTranslator {
 
     public Reservation process(carrental.model.reservation.Reservation reservation) {
+
+        System.out.println("PickupPoint: MessageTranslator Reservation (reservation) --> Reservation (pickupPoint)");
         Reservation outputReservation = new Reservation();
 
         outputReservation.setCarId(reservation.getCar().getId());

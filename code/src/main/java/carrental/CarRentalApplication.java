@@ -1,5 +1,6 @@
 package carrental;
 
+import carrental.repository.pickupPoint.PickupProtocolRepository;
 import carrental.repository.pickupPoint.ReservationRepository;
 import org.apache.camel.spring.boot.CamelSpringBootApplicationController;
 import org.springframework.boot.SpringApplication;
@@ -24,11 +25,17 @@ public class CarRentalApplication {
         ApplicationContext applicationContext = new SpringApplication(CarRentalApplication.class).run(args);
 
         //CLEAN-UP
-        ReservationRepository r = applicationContext.getBean(ReservationRepository.class);
-        r.deleteAll();
+        cleanupDatabase(applicationContext);
 
         CamelSpringBootApplicationController applicationController =
                 applicationContext.getBean(CamelSpringBootApplicationController.class);
         applicationController.blockMainThread();
+    }
+
+    private static void cleanupDatabase(ApplicationContext applicationContext) {
+        ReservationRepository reservationRepository = applicationContext.getBean(ReservationRepository.class);
+        reservationRepository.deleteAll();
+        PickupProtocolRepository pickupProtocolRepository = applicationContext.getBean(PickupProtocolRepository.class);
+        pickupProtocolRepository.deleteAll();
     }
 }

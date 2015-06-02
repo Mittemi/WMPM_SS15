@@ -1,13 +1,12 @@
 package carrental.routing.pickupPoint;
 
 import carrental.CarRentalConfig;
-import carrental.beans.pickupPoint.ReservationTranslator;
+import carrental.beans.pickupPoint.esb.ReservationTranslator;
 import carrental.model.reservation.Reservation;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.language.bean.BeanExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

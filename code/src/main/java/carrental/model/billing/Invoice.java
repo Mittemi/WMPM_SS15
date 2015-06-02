@@ -3,16 +3,25 @@ package carrental.model.billing;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+
 /**
  * Created by Michael on 13.05.2015.
  */
+@XmlRootElement
+@XmlSeeAlso(carrental.model.billing.Claim.class)
 @Document(collection = "invoice")
-public class Invoice  {
+public class Invoice implements Serializable {
 
     @Id
     private Long id;
@@ -30,7 +39,8 @@ public class Invoice  {
     public Invoice() {
         claims = new LinkedList<>();
     }
-
+    
+    @XmlAttribute
     public Long getId() {
         return id;
     }
@@ -38,7 +48,8 @@ public class Invoice  {
     public void setId(Long id) {
         this.id = id;
     }
-
+    
+    @XmlElement(name = "claim")
     public List<Claim> getClaims() {
         return claims;
     }
@@ -46,7 +57,8 @@ public class Invoice  {
     public void setClaims(List<Claim> claims) {
         this.claims = claims;
     }
-
+    
+    @XmlElement
     public String getCustomer() {
         return customer;
     }
@@ -54,7 +66,8 @@ public class Invoice  {
     public void setCustomer(String customer) {
         this.customer = customer;
     }
-
+    
+    @XmlElement
     public String getAddress() {
         return address;
     }
@@ -63,6 +76,7 @@ public class Invoice  {
         this.address = address;
     }
 
+    @XmlElement
     public Date getDate() {
         return date;
     }
@@ -71,6 +85,7 @@ public class Invoice  {
         this.date = date;
     }
 
+    @XmlElement
     public int getNumber() {
         return number;
     }
@@ -78,4 +93,5 @@ public class Invoice  {
     public void setNumber(int number) {
         this.number = number;
     }
+    
 }

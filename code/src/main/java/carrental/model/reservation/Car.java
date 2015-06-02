@@ -21,7 +21,7 @@ public class Car extends AbstractPersistable<Long> {
     private CarState carState;
 
 
-    @OneToMany(mappedBy = "car", targetEntity = carrental.model.reservation.Reservation.class)
+    @OneToMany(mappedBy = "car", targetEntity = carrental.model.reservation.Reservation.class, fetch = FetchType.LAZY)
     private List<Reservation> reservations;
 
     public Car() {

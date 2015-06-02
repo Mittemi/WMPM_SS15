@@ -24,6 +24,16 @@ public class PickupProtocol  {
     //use the reservation instead of the customer_id
     private Reservation reservation;
 
+    private boolean canceledPickup;
+
+    public boolean isCanceledPickup() {
+        return canceledPickup;
+    }
+
+    public void setCanceledPickup(boolean canceledPickup) {
+        this.canceledPickup = canceledPickup;
+    }
+
     private List<Claim> claims;
 
     public PickupProtocol() {
