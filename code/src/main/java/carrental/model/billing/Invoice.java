@@ -1,6 +1,7 @@
 package carrental.model.billing;
 
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Component;
@@ -24,7 +25,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 public class Invoice implements Serializable {
 
     @Id
-    private Long id;
+    private String _id;
 
     private List<Claim> claims;
 
@@ -41,12 +42,12 @@ public class Invoice implements Serializable {
     }
     
     @XmlAttribute
-    public Long getId() {
-        return id;
+    public String getId() {
+        return _id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(String id) {
+        this._id = id;
     }
     
     @XmlElement(name = "claim")

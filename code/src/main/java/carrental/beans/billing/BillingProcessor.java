@@ -25,7 +25,7 @@ public class BillingProcessor  implements Processor{
         
         //Create invoice and transform model.pickupPoint.Claims into model.billing.Claims
         Invoice invoice=new Invoice();
-        invoice.setId(1L);
+        //invoice.setId(1L);
       
         ArrayList<carrental.model.billing.Claim> billingClaims=new ArrayList<carrental.model.billing.Claim>();
         
@@ -36,7 +36,7 @@ public class BillingProcessor  implements Processor{
         	billingClaim.setCosts(new BigDecimal(199.99).setScale(2, RoundingMode.FLOOR));  //just a sample price-value
         	billingClaims.add(billingClaim);
         }
-        invoice.setId(1L);
+        //invoice.setId(1L);
         invoice.setCustomer(protocol.getReservation().getCustomerId()+"");
         System.out.println("Invoice created");
         

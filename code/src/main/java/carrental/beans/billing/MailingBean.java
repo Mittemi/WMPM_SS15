@@ -21,7 +21,7 @@ public class MailingBean {
 		File file=(File) exchange.getIn().getBody();
 		CamelContext camelContext = exchange.getContext();
 		
-		/** ONLY TU-MAIL ACCOUT IS WORKING (WEB.de, GMX.at aren't)! **/
+		/** ONLY TU-MAIL ACCOUNT IS WORKING (WEB.de, GMX.at aren't)! **/
 		
 		Properties props = new Properties(); 	
 		props.put( "mail.smtp.auth","true");
