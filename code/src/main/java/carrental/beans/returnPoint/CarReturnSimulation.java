@@ -65,7 +65,7 @@ public class CarReturnSimulation {
     @Scheduled(fixedRate = 3000)
     public void carReturned()
     {
-        if(Constants.ENABLE_CAR_RETURN) return; // no simulation use real one
+        //if(Constants.ENABLE_CAR_RETURN) return; // no simulation use real one
 
         if(!CarQueue.listOfPickups.isEmpty())
         {
@@ -73,7 +73,7 @@ public class CarReturnSimulation {
             CarQueue.listOfPickups.removeFirst();
             ReturnProtocol returnProtocol = new ReturnProtocol();
             returnProtocol.setId(pickupProtocol.getReservation().getCarId());
-            System.out.println("Car with id " + pickupProtocol.getReservation().getCarId() + "arrived at return point");
+            System.out.println("Car with id " + pickupProtocol.getReservation().getCarId() + " arrived at return point");
             producerTemplate.sendBodyAndHeader("seda:queue:carToInspectQueue", returnProtocol, "carId", pickupProtocol.getReservation().getCarId());
         }
     }

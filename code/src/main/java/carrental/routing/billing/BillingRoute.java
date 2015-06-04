@@ -19,7 +19,8 @@ public class BillingRoute  extends RouteBuilder{
 	@Override
 	public void configure() throws Exception {
 		String mongoEndpointString = "mongodb:mongo?database=" + config.getBilling().getMongo().getName() +"&collection=invoice&operation=save&writeResultAsHeader=true";
-		from("direct:endpoint").bean(BillingBean.class).wireTap(mongoEndpointString).bean(PrintBean.class).bean(MailingBean.class);		
+		//Commented out by COnstantin since errors were thrown
+		// from("direct:endpoint").bean(BillingBean.class).wireTap(mongoEndpointString).bean(PrintBean.class).bean(MailingBean.class);
 	}
 
 }

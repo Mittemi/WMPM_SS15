@@ -43,11 +43,18 @@ public class AggregationStrategyCarReturn implements AggregationStrategy {
         claimsList.add(newClaim);
 
         newBody.setClaims(claimsList);
-        newBody.setId(1L);
+        newBody.setId(oldBody.getId());
         newBody.setReturnDate(new Date());
 
         // update the existing message with the added body
         oldExchange.getIn().setBody(newBody);
+        //If claimList empty, then set Header to noClaims
+        if(claimsList.isEmpty())
+            oldExchange.getIn().setHeader("recipients","direct:billingPoint");
+        else
+            oldExchange.getIn().setHeader("recipients","seda:queue:claimFixCenter,seda:queue:claimFixAggregationPoint");
+
+            oldExchange.getIn().setHeader("claimsToFixCnt",claimsList.size());
         // and return it
         return oldExchange;
     }

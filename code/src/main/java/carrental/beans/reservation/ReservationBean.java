@@ -60,7 +60,7 @@ public class ReservationBean {
         carRepo.save(car5);
     }
 
-    @Scheduled(fixedDelay = 120000)
+    @Scheduled(fixedDelay = 5000)
     public void onCustomerEntersStore() {
         System.out.println("Reservation: Customer entered store.");
         boolean available;
