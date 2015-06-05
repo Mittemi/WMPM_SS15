@@ -73,8 +73,9 @@ public class BillingBean {
         invoice.setClaims(billingClaims);
         invoice.setDate(new Date());
         invoice.setNumber(generateInvoiceNumber());
-
-        /* wait for the implementation of the preceding process
+        invoice.setEmailAddress("max.duestermann@gmx.at");  //using only one email-address for simulation purposes!
+        
+        /* waiting for the implementation of the preceding process
         
         Customer c = customerRepo.findOne(protocol.getReservation().getCustomerId());
         
