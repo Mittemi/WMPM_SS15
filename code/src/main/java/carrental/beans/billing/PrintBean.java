@@ -44,8 +44,10 @@ public class PrintBean {
     public void createPdf(Exchange exchange) throws Exception {
         Invoice invoice=(Invoice) exchange.getIn().getBody();
         File f = generatePDF(invoice);
-        //checkDB();
+        //checkDB(); //method for db-testing purposes
         exchange.getIn().setBody(f);
+        exchange.setProperty("receiverEmailAddress", invoice.getEmailAddress());
+        exchange.setProperty("receiverName", invoice.getCustomer());
     }
 	
     private File generatePDF(Invoice invoice) throws DocumentException, FileNotFoundException{

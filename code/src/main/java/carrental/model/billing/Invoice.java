@@ -34,6 +34,8 @@ public class Invoice implements Serializable {
     private String address;
 
     private Date date;
+    
+    private String emailAddress;
 
     private int number;
 
@@ -95,4 +97,11 @@ public class Invoice implements Serializable {
         this.number = number;
     }
     
+    public String getEmailAddress(){
+    	return this.emailAddress;
+    }
+    
+    public void setEmailAddress(String emailAddress){
+    	this.emailAddress=emailAddress;
+    }
 }
