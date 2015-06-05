@@ -1,4 +1,4 @@
-package carrental.beans.returnPoint;
+package carrental.beans.returnPoint.esb;
 
 import carrental.model.pickupPoint.Claim;
 import carrental.model.pickupPoint.ClaimType;
@@ -25,17 +25,13 @@ public class AggregationStrategyCarReturn implements AggregationStrategy {
             return newExchange;
         }
 
-        // now we have both an existing message (oldExchange)
-        // and a incoming message (newExchange)
-        // we want to merge together.
 
-        // in this example we add their bodies
         PickupProtocol oldBody = oldExchange.getIn().getBody(PickupProtocol.class);
         ReturnProtocol newBody = newExchange.getIn().getBody(ReturnProtocol.class);
 
-        // the body should be the two bodies added together
         newBody.setReservation(oldBody.getReservation());
 
+        // TODO: Replace Static Claim Generation
         Claim newClaim = new Claim();
         newClaim.setClaimType(ClaimType.Cleaning);
         newClaim.setDescription("A very dirty, new claim.");
@@ -50,11 +46,16 @@ public class AggregationStrategyCarReturn implements AggregationStrategy {
         oldExchange.getIn().setBody(newBody);
         //If claimList empty, then set Header to noClaims
         if(claimsList.isEmpty())
+        {
             oldExchange.getIn().setHeader("recipients","direct:billingPoint");
-        else
-            oldExchange.getIn().setHeader("recipients","seda:queue:claimFixCenter,seda:queue:claimFixAggregationPoint");
+            System.out.println("ReturnPoint: Car Inspection for CarId = "+ newBody.getReservation().getCarId()+" : No Claims --> Billing Point");
+        }
+        else {
+            oldExchange.getIn().setHeader("recipients", "seda:queue:claimFixCenter,seda:queue:claimFixAggregationPoint");
+            System.out.println("ReturnPoint: Car Inspection for CarId = "+ newBody.getReservation().getCarId()+" : Claims found --> ClaimFixCenter ");
+        }
 
-            oldExchange.getIn().setHeader("claimsToFixCnt",claimsList.size());
+            oldExchange.getIn().setHeader("claimsCnt+Protocol",claimsList.size()+1);
         // and return it
         return oldExchange;
     }

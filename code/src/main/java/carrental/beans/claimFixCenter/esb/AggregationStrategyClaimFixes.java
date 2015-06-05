@@ -1,4 +1,4 @@
-package carrental.beans.claimFixCenter;
+package carrental.beans.claimFixCenter.esb;
 
 import carrental.model.pickupPoint.Claim;
 import carrental.model.pickupPoint.ClaimType;

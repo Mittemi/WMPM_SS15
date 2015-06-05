@@ -28,8 +28,9 @@ public class CarReturnSimulation {
     {
         if(Constants.ENABLE_CAR_RETURN) return; // no simulation use real one
 
+        long id = CarSimulation.getNewCarId();
         PickupProtocol pickupProtocol = new PickupProtocol();
-        pickupProtocol.setId(1L);
+        pickupProtocol.setId(id);
 
         LinkedList<Claim> claimsList = new LinkedList();
         Claim claim1= new Claim();
@@ -39,9 +40,9 @@ public class CarReturnSimulation {
         pickupProtocol.setClaims(claimsList);
 
         Reservation reservation = new Reservation();
-        reservation.setId(1L);
+        reservation.setId(id);
         reservation.setCarId(CarSimulation.getNewCarId());
-        reservation.setCustomerId(1L);
+        reservation.setCustomerId(id);
         String reservationDateString = "29-Apr-2015,13:00";
         String pickupDateString = "30-Apr-2015,13:00";
         DateFormat formatter = new SimpleDateFormat("d-MMM-yyyy,HH:mm");
@@ -65,8 +66,6 @@ public class CarReturnSimulation {
     @Scheduled(fixedRate = 3000)
     public void carReturned()
     {
-        //if(Constants.ENABLE_CAR_RETURN) return; // no simulation use real one
-
         if(!CarQueue.listOfPickups.isEmpty())
         {
             PickupProtocol pickupProtocol = CarQueue.listOfPickups.getFirst();

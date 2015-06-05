@@ -1,5 +1,6 @@
-package carrental.beans.returnPoint;
+package carrental.beans.returnPoint.esb;
 
+import carrental.beans.returnPoint.CarQueue;
 import carrental.model.pickupPoint.PickupProtocol;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
