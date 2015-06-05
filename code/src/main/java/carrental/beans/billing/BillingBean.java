@@ -11,6 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
+
+import carrental.MongoDbConfiguration;
 import carrental.beans.reservation.CarDTO;
 import carrental.model.billing.Invoice;
 import carrental.model.pickupPoint.ReturnProtocol;
@@ -33,15 +40,22 @@ public class BillingBean {
 	@Autowired
 	CarRepository carRepo;
 	
+	@Autowired
+	private MongoDbConfiguration mongoConfig;
+	
 	private static RestTemplate restClient=new RestTemplate();
 	
 	
-	public void createInvoice(Exchange exchange){
+	public void createInvoice(Exchange exchange) throws Exception{
 		ReturnProtocol protocol = exchange.getIn().getBody(ReturnProtocol.class);
         System.out.println("Return Protocol arrived in Billing-Department, ID="+protocol.getId());
         
         //update the availabilityState of the returned car
-        setCarAvailable(carRepo.findOne(protocol.getReservation().getCarId()).getLicensePlate());
+        Car c=carRepo.findOne(protocol.getReservation().getCarId());
+
+        if(c!=null)	
+        	setCarAvailable(c.getLicensePlate());
+        c=carRepo.findOne(protocol.getReservation().getCarId());
         
         //Create invoice and transform model.pickupPoint.Claims into model.billing.Claims
         Invoice invoice=new Invoice();
@@ -58,6 +72,7 @@ public class BillingBean {
         
         invoice.setClaims(billingClaims);
         invoice.setDate(new Date());
+        invoice.setNumber(generateInvoiceNumber());
 
         /* wait for the implementation of the preceding process
         
@@ -72,7 +87,7 @@ public class BillingBean {
         //invoice.setAddress(c.getAddress());
         
         invoice.setCustomer("Max Muster");  //Sample value
-        invoice.setAddress("DavidHumeStreet");  //Sample value
+        invoice.setAddress("DavidHumeStreet 12");  //Sample value
         exchange.getIn().setBody(invoice);
 	}
 	
@@ -85,6 +100,18 @@ public class BillingBean {
 	private static void setCarAvailable(String licensePlate){  
 		String url = "http://127.0.0.1:9000/availability?licensePlate="+licensePlate+"&state=AVAILABLE";
 		restClient.getForObject(url, CarDTO.class);
+	}
+	
+	/*
+	 * Generates a new invoice-number.
+	 * If there already are invoices stored in the MongoDB: return highest invoicenumber + 1
+	 * Else return 1.
+	 */
+	private int generateInvoiceNumber() throws Exception{
+		DBCursor dbCursor=mongoConfig.mongo().getDB("carrental").getCollection("invoice").find().sort( new BasicDBObject( "number" , -1 ) ).limit(1);
+		if(dbCursor.hasNext())
+			return ((Integer) dbCursor.next().get("number")) + 1;
+		return 1;
 	}
 	
 }

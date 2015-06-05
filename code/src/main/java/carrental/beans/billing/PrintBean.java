@@ -6,7 +6,10 @@ import org.springframework.stereotype.Component;
 
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 
+import carrental.CarRentalConfig;
 import carrental.MongoDbConfiguration;
 import carrental.model.billing.Claim;
 import carrental.model.billing.Invoice;
@@ -37,10 +40,11 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 @Component
 public class PrintBean {
- 
-    public void createPdf(Exchange exchange) throws DocumentException, IOException {
+	
+    public void createPdf(Exchange exchange) throws Exception {
         Invoice invoice=(Invoice) exchange.getIn().getBody();
         File f = generatePDF(invoice);
+        //checkDB();
         exchange.getIn().setBody(f);
     }
 	
@@ -173,16 +177,24 @@ public class PrintBean {
     	    section.add(table);
     }
     
-	/*
-	//For testing purposes
-	@Autowired
-	private MongoDbConfiguration mongoConfig;
-
-	public void doSmth() throws Exception{
+    //For testing purposes
+    @Autowired
+  	private MongoDbConfiguration mongoConfig;
+	public void checkDB() throws Exception{
 		DB dataBase = mongoConfig.mongo().getDB("carrental");
 		DBCollection dbColl = dataBase.getCollection("invoice");
-		System.out.println("DEBUG OUTPUT: dbColl.find().count(): "+dbColl.count());
+		//dbColl.setObjectClass(Invoice.class);
+		//System.out.println("DEBUG OUTPUT: dbColl.find().count(): "+dbColl.count());
+		DBCursor dbCursor=dbColl.find();
+		System.out.println("dbColl.count(): "+dbColl.count());
+		while(dbCursor.hasNext()){
+			//Invoice tmp=(Invoice)dbCursor.next();
+			DBObject dbObject=dbCursor.next();
+			//dbColl.remove(dbObject);
+			//System.out.println("dbCursor.next():\ngetId(): "+tmp.getId()+"\ngetCustomer(): "+tmp.getCustomer()+"\ngetAddress(): "+tmp.getAddress());
+			System.out.println("DBObject: "+dbObject.toString());
+		}
 	}
-	*/
+	
 	
 }
