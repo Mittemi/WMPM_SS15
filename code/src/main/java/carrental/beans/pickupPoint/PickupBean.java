@@ -67,40 +67,38 @@ public class PickupBean {
 
         boolean[] used = new boolean[5];
 
-        if(!random.nextBoolean())   return claimList;       //no claims
-
         while(random.nextBoolean()) {
 
             switch (random.nextInt(used.length + 1)) {
                 case 0:
-                    used[0] = true;
                     if(!used[0]) {
                         claimList.add(new Claim(ClaimType.Cleaning, "Car requires cleaning, still dirty!"));
                     }
+                    used[0] = true;
                     break;
                 case 1:
-                    used[1] = true;
                     if(!used[1]) {
                         claimList.add(new Claim(ClaimType.Electrical, "Lights are not working"));
                     }
+                    used[1] = true;
                     break;
                 case 2:
-                    used[2] = true;
                     if(!used[2]) {
                         claimList.add(new Claim(ClaimType.Mechanical, "Control lamp indicates error!"));
                     }
+                    used[2] = true;
                     break;
                 case 3:
-                    used[3] = true;
                     if(!used[3]) {
                         claimList.add(new Claim(ClaimType.Refilling, "Someone forgot to refill!"));
                     }
+                    used[3] = true;
                     break;
                 case 4:
-                    used[4] = true;
                     if(!used[4]) {
                         claimList.add(new Claim(ClaimType.Paintwork, "Don't know what they thought when they accepted this car during return!"));
                     }
+                    used[4] = true;
                     break;
                 default:
                     break;
