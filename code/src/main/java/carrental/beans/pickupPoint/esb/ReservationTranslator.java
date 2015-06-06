@@ -13,6 +13,7 @@ public class ReservationTranslator {
         Reservation outputReservation = new Reservation();
 
         outputReservation.setCarId(reservation.getCar().getId());
+        outputReservation.setLicensePlate(reservation.getCar().getLicensePlate());
         outputReservation.setCustomerId(reservation.getCustomer().getId());
         outputReservation.setReservationDate(reservation.getDate());
         outputReservation.setReservationId(reservation.getId());

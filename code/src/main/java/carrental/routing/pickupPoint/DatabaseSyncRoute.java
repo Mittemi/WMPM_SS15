@@ -33,7 +33,7 @@ public class DatabaseSyncRoute extends RouteBuilder {
         // later on the pollEnricher using the camel jpa component accesses the database to get the actual reservation
         // this reservation is stored using the camel mongodb component
         // additionally we trigger the actual pickup work (create pickup protocol)
-        from("activemq:queue:pickupInitiatedQueue?asyncConsumer=true")
+        from("activemq:queue:pickupInitiatedQueue")
                 .process(new Processor() {
                     public void process(Exchange exchange) {
                         Message in = exchange.getIn();
@@ -41,17 +41,16 @@ public class DatabaseSyncRoute extends RouteBuilder {
                         content = content.substring(content.indexOf(": ") + 1);
                         content = content.trim();
                         in.setBody(Integer.parseInt(content));
+                        System.out.println("ESB (PP): Transfer data from reservation to pickup point for id " + content);
                     }
                 })
-                .log("Transfer data from reservation to pickup point for: ${body}")
                 .pollEnrich("jpa:" + Reservation.class.getName() + "?consumeLockEntity=false&consumeDelete=false")// pollEnrich
                 .bean(ReservationTranslator.class)
                 .to("direct:insertReservationMongo");
 
         String mongoEndpointString = "mongodb:mongo?database=" + config.getPickupPoint().getMongo().getName() +"&collection=reservation&operation=save&writeResultAsHeader=true";
 
-        from("direct:insertReservationMongo")
-                .log("Insert to MongoDB: ${body}")
-                .to(mongoEndpointString).log("Saved to db: ${body}").to("direct:pickupPoint.PickupProtocol");
+        from("direct:insertReservationMongo").process(p -> { System.out.println("ESB (PP): Save reservation to mongo db "); })
+            .to(mongoEndpointString).to("direct:pickupPoint.PickupProtocol");
+        }
     }
-}

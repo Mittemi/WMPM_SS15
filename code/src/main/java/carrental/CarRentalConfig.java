@@ -1,5 +1,6 @@
 package carrental;
 
+import carrental.model.pickupPoint.Reservation;
 import com.sun.istack.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -45,6 +46,20 @@ public class CarRentalConfig {
         }
     }
 
+    public static class Reservation {
+
+        private String availabilityUrl;
+
+        public String getAvailabilityUrl() {
+            return availabilityUrl;
+        }
+
+        public void setAvailabilityUrl(String availabilityUrl) {
+            this.availabilityUrl = availabilityUrl;
+        }
+
+    }
+
     public static class PickupPoint {
 
         @NotNull
@@ -60,6 +75,17 @@ public class CarRentalConfig {
         public void setMongo(Mongo mongo) {
             this.mongo = mongo;
         }
+    }
+
+    @NotNull
+    private Reservation reservation;
+
+    public Reservation getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
     }
 
     @NotNull
