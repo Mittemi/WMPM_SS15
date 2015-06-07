@@ -48,11 +48,13 @@ public class ReservationBean {
 
     @PostConstruct
     public void initCarSampleData() {
-        Car car1 = new Car("Ferarri 488 GTB", "FR 632 TH", "red", 492, CarState.AVAILABLE);
-        Car car2 = new Car("Skoda Felicia", "FR 631 TH", "red", 55, CarState.AVAILABLE);
-        Car car3 = new Car("VW Golf R", "FR 12 CH", "blue", 270, CarState.AVAILABLE);
-        Car car4 = new Car("Audi A6 Quattro", "FR 75 CH", "green", 158, CarState.AVAILABLE);
-        Car car5 = new Car("Kia Ceed", "W 14588 L", "black", 75, CarState.AVAILABLE);
+        carRepo.deleteAll();
+        reservationRepo.deleteAll();
+        Car car1 = new Car("Ferarri 488 GTB", "FR 632 TH", "red", 492, CarState.AVAILABLE, 250d);
+        Car car2 = new Car("Skoda Felicia", "FR 631 TH", "red", 55, CarState.AVAILABLE, 39d);
+        Car car3 = new Car("VW Golf R", "FR 12 CH", "blue", 270, CarState.AVAILABLE, 49d);
+        Car car4 = new Car("Audi A6 Quattro", "FR 75 CH", "green", 158, CarState.AVAILABLE, 69d);
+        Car car5 = new Car("Kia Ceed", "W 14588 L", "black", 75, CarState.AVAILABLE, 45d);
         carRepo.save(car1);
         carRepo.save(car2);
         carRepo.save(car3);
@@ -60,7 +62,7 @@ public class ReservationBean {
         carRepo.save(car5);
     }
 
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(fixedDelay = 30000)
     public void onCustomerEntersStore() {
         System.out.println("Reservation: Customer entered store.");
         boolean available;

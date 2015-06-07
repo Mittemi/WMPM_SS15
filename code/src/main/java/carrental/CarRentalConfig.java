@@ -1,7 +1,12 @@
 package carrental;
 
+import com.google.gson.*;
 import com.sun.istack.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+
+import java.lang.reflect.Type;
+import java.util.Date;
 
 /**
  * Created by Michael on 14.05.2015.

@@ -19,6 +19,7 @@ public class Car extends AbstractPersistable<Long> {
     private String color;
     private int power;
     private CarState carState;
+    private Double pricePerDay;
 
 
     @OneToMany(mappedBy = "car", targetEntity = carrental.model.reservation.Reservation.class, fetch = FetchType.LAZY)
@@ -31,13 +32,22 @@ public class Car extends AbstractPersistable<Long> {
         return reservations;
     }
 
-    public Car(String description, String licensePlate, String color, int power, CarState carState) {
+    public Car(String description, String licensePlate, String color, int power, CarState carState, Double pricePerDay) {
         this();
         this.description = description;
         this.licensePlate = licensePlate;
         this.color = color;
         this.power = power;
         this.carState = carState;
+        this.pricePerDay = pricePerDay;
+    }
+
+    public Double getPricePerDay() {
+        return pricePerDay;
+    }
+
+    public void setPricePerDay(Double pricePerDay) {
+        this.pricePerDay = pricePerDay;
     }
 
     public CarState getCarState() {
