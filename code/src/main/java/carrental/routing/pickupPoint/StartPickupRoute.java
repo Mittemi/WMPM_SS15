@@ -5,6 +5,7 @@ import carrental.Constants;
 import carrental.beans.pickupPoint.PickupBean;
 import carrental.model.pickupPoint.PickupProtocol;
 import carrental.model.pickupPoint.Reservation;
+import carrental.model.reservation.CarState;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.RouteDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +34,33 @@ public class StartPickupRoute extends RouteBuilder {
     @Override
     public void configure() throws Exception {
 
-        String mongoEndpointString = "mongodb:mongo?database=" + config.getPickupPoint().getMongo().getName() +"&collection=pickupProtocols&operation=save&writeResultAsHeader=true";
+        String mongoEndpointString = "mongodb:mongo?database=" + config.getPickupPoint().getMongo().getName() + "&collection=pickupProtocols&operation=save&writeResultAsHeader=true";
 
-        from("direct:pickupPoint.PickupProtocol").log("Create pickup protocol for: ${body}")
-                .bean(PickupBean.class, "showCar(carrental.model.pickupPoint.Reservation)")
-                .to(mongoEndpointString);
+        // create the protocol
+        from("direct:pickupPoint.PickupProtocol").process(p -> {
+            System.out.println("ESB (PP): Create pickup protocol for:" + p.getIn().getBody());
+        })
+                .bean(PickupBean.class, "showCar(carrental.model.pickupPoint.Reservation)");
+
+        // protocol created, cancel or queue for car return, webservice call
+        from("direct:pickupPoint.PickupProtocol.created").wireTap(mongoEndpointString).
+                choice().when(simple("${body.isCanceledPickup}"))
+                .choice().when(constant(Constants.ENABLE_CANCEL_PICKUP))
+                .to("seda:pickupPoint.cancel").otherwise().log("Set Constants.ENABLE_CANCEL_PICKUP to true!")
+                .endChoice()
+                .otherwise().choice().when(constant(Constants.ENABLE_CAR_RETURN)).to("direct:StartPickupRoute.internal")
+                .otherwise().log("Set Constants.ENABLE_CAR_RETURN to true!")
+                .endChoice();
+
+        // queue for car return
+        from("direct:StartPickupRoute.internal").wireTap("direct:pickupPoint.callAvailability.inuse")
+                .setHeader("carId", simple("${body.getReservation().getCarId()}")).to("seda:queue:carToInspectQueue");
+
+        // car in use
+        from("direct:pickupPoint.callAvailability.inuse")
+                .process((p) -> {
+                    System.out.println("ESB (PP): Set car as in use");
+                }).setHeader("parameters", simple("?licensePlate=${body.getReservation().getLicensePlateUrl()}&state=INUSE")
+        ).to("restlet:" + config.getReservation().getAvailabilityUrl() + "{parameters}");
     }
 }

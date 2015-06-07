@@ -17,6 +17,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
+import carrental.Constants;
 import carrental.MongoDbConfiguration;
 import carrental.beans.reservation.CarDTO;
 import carrental.model.billing.Invoice;
@@ -62,11 +63,12 @@ public class BillingBean {
 
         ArrayList<carrental.model.billing.Claim> billingClaims=new ArrayList<carrental.model.billing.Claim>();
         
-        for(carrental.model.pickupPoint.Claim pickupPointClaim: protocol.getClaims()){
+        for(carrental.model.pickupPoint.Claim protocolClaim: protocol.getClaims()){
         	carrental.model.billing.Claim billingClaim=new carrental.model.billing.Claim();
-        	billingClaim.setClaimType(pickupPointClaim.getClaimType());
-        	billingClaim.setDescription(pickupPointClaim.getDescription());
-        	billingClaim.setCosts(getRandomPrice()); 
+        	billingClaim.setClaimType(protocolClaim.getClaimType());
+        	billingClaim.setDescription(protocolClaim.getDescription());
+        	//billingClaim.setCosts(getRandomPrice()); 
+        	billingClaim.setCosts(calculateCosts(Constants.servicePrices.get(protocolClaim.getClaimType())));
         	billingClaims.add(billingClaim);
         }
         
@@ -92,9 +94,12 @@ public class BillingBean {
         exchange.getIn().setBody(invoice);
 	}
 	
-	private static BigDecimal getRandomPrice(){	
-		Random randomGenerator = new Random();
-		Double r=randomGenerator.nextGaussian()*90 + 550;  //z*SD + mu
+	/**
+	 * @param servicePrice The standardized servicePrice is used as the mean for the randomized cost-calculation
+	 */
+	private static BigDecimal calculateCosts(double servicePrice){
+		Random randomGenerator = new Random();		
+		Double r=randomGenerator.nextGaussian()*90 + servicePrice;  //z*SD + mu
 		return new BigDecimal(r).setScale(2, RoundingMode.FLOOR);
 	}
 	

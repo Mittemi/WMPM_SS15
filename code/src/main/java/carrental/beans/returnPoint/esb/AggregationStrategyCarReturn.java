@@ -1,5 +1,6 @@
 package carrental.beans.returnPoint.esb;
 
+import carrental.beans.pickupPoint.PickupBean;
 import carrental.model.pickupPoint.Claim;
 import carrental.model.pickupPoint.ClaimType;
 import carrental.model.pickupPoint.PickupProtocol;
@@ -31,12 +32,14 @@ public class AggregationStrategyCarReturn implements AggregationStrategy {
 
         newBody.setReservation(oldBody.getReservation());
 
-        // TODO: Replace Static Claim Generation
-        Claim newClaim = new Claim();
-        newClaim.setClaimType(ClaimType.Cleaning);
-        newClaim.setDescription("A very dirty, new claim.");
+        writeClaimsFile(newBody.getReservation().getLicensePlate());
+
         List<Claim> claimsList = oldBody.getClaims();
-        claimsList.add(newClaim);
+
+        for (Claim claim : PickupBean.generateClaims()) {
+            if(!claimsList.stream().anyMatch(x->x.getClaimType() == claim.getClaimType()))
+                claimsList.add(claim);
+        }
 
         newBody.setClaims(claimsList);
         newBody.setId(oldBody.getId());
@@ -58,5 +61,9 @@ public class AggregationStrategyCarReturn implements AggregationStrategy {
             oldExchange.getIn().setHeader("claimsCnt+Protocol",claimsList.size()+1);
         // and return it
         return oldExchange;
+    }
+
+    private void writeClaimsFile(String licensePlate) {
+
     }
 }

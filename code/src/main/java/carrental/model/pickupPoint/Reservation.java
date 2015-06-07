@@ -17,6 +17,20 @@ public class Reservation {
 
     private Long reservationId;
 
+    private String licensePlate;
+
+    public String getLicensePlateUrl() {
+        return getLicensePlate().replace(" ", "%20");
+    }
+
+    public String getLicensePlate() {
+        return licensePlate;
+    }
+
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
+    }
+
     @Id
     private Long id;
 

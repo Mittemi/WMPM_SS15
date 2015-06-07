@@ -1,12 +1,8 @@
 package carrental;
 
-import com.google.gson.*;
+import carrental.model.pickupPoint.Reservation;
 import com.sun.istack.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-
-import java.lang.reflect.Type;
-import java.util.Date;
 
 /**
  * Created by Michael on 14.05.2015.
@@ -50,6 +46,20 @@ public class CarRentalConfig {
         }
     }
 
+    public static class Reservation {
+
+        private String availabilityUrl;
+
+        public String getAvailabilityUrl() {
+            return availabilityUrl;
+        }
+
+        public void setAvailabilityUrl(String availabilityUrl) {
+            this.availabilityUrl = availabilityUrl;
+        }
+
+    }
+
     public static class PickupPoint {
 
         @NotNull
@@ -65,6 +75,17 @@ public class CarRentalConfig {
         public void setMongo(Mongo mongo) {
             this.mongo = mongo;
         }
+    }
+
+    @NotNull
+    private Reservation reservation;
+
+    public Reservation getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
     }
 
     @NotNull

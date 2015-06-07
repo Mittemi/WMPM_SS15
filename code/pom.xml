@@ -127,6 +127,14 @@
 			<version>${camel-version}</version>
 		</dependency>
 
+		<!--REST-->
+
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-restlet</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
+
 		<!--Marshal XML/Json -->
 		<dependency>
 			<groupId>org.apache.camel</groupId>
