@@ -68,8 +68,8 @@ public class CarReturnSimulation {
     {
         if(!CarQueue.listOfPickups.isEmpty())
         {
-            PickupProtocol pickupProtocol = CarQueue.listOfPickups.getFirst();
-            CarQueue.listOfPickups.removeFirst();
+            PickupProtocol pickupProtocol = CarQueue.listOfPickups.get(0);
+            CarQueue.listOfPickups.remove(pickupProtocol);
             ReturnProtocol returnProtocol = new ReturnProtocol();
             returnProtocol.setId(pickupProtocol.getReservation().getCarId());
             System.out.println("Car with id " + pickupProtocol.getReservation().getCarId() + " arrived at return point");
