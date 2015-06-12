@@ -4,11 +4,13 @@ import org.apache.camel.dataformat.bindy.annotation.CsvRecord;
 import org.apache.camel.dataformat.bindy.annotation.DataField;
 import org.springframework.data.annotation.Id;
 
+import java.io.Serializable;
+
 /**
  * Created by Michael on 13.05.2015.
  */
 @CsvRecord(separator = ";")
-public class Claim {
+public class Claim implements Serializable {
 
     public Claim() {
     }

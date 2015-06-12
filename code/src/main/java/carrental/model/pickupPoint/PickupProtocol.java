@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * Created by Michael on 13.05.2015.
  */
 @Document(collection = "pickupProtocols")
-public class PickupProtocol  {
+public class PickupProtocol implements Serializable {
 
     @Id
     private Long id;

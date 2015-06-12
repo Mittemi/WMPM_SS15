@@ -36,11 +36,16 @@ public class StartPickupRoute extends RouteBuilder {
 
         String mongoEndpointString = "mongodb:mongo?database=" + config.getPickupPoint().getMongo().getName() + "&collection=pickupProtocols&operation=save&writeResultAsHeader=true";
 
-        // create the protocol
+        // Application -> ESB
+        from("activemq:queue:createPickupProtocolDoneQueue").process(p -> {
+            System.out.println("ESB (PP): PickupProtocol started");
+        }).to("direct:pickupPoint.PickupProtocol.created");
+
+        // ESB -> Application
         from("direct:pickupPoint.PickupProtocol").process(p -> {
-            System.out.println("ESB (PP): Create pickup protocol for:" + p.getIn().getBody());
-        })
-                .bean(PickupBean.class, "showCar(carrental.model.pickupPoint.Reservation)");
+            System.out.println("ESB (PP): Call PickupProtocol application for:" + p.getIn().getBody());
+        }).to("activemq:queue:createPickupProtocolQueue");
+               // .bean(PickupBean.class, "showCar(carrental.model.pickupPoint.Reservation)");
 
         // protocol created, cancel or queue for car return, webservice call
         from("direct:pickupPoint.PickupProtocol.created").wireTap(mongoEndpointString).
