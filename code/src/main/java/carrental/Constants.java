@@ -11,9 +11,9 @@ import carrental.model.pickupPoint.ClaimType;
 public class Constants {
     public static final String RESERVATION_PU = "reservation";
 
-    public static final boolean ENABLE_CAR_RETURN = false;
+    public static final boolean ENABLE_CAR_RETURN = true;
 
-    public static final boolean ENABLE_CANCEL_PICKUP = false;
+    public static final boolean ENABLE_CANCEL_PICKUP = true;
     
     public static final Map<Enum,Double> servicePrices=new HashMap<Enum,Double>();
     

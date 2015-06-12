@@ -1,6 +1,7 @@
 package carrental.beans.returnPoint;
 
 import carrental.model.pickupPoint.PickupProtocol;
+import carrental.model.pickupPoint.Reservation;
 import carrental.model.pickupPoint.ReturnProtocol;
 
 import java.util.Collections;
@@ -12,5 +13,6 @@ import java.util.List;
  */
 public class CarQueue {
     public static List<PickupProtocol> listOfPickups = Collections.synchronizedList(new LinkedList());
+    public static List<Reservation> listForClaims = Collections.synchronizedList(new LinkedList());
 
 }

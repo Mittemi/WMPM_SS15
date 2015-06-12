@@ -3,10 +3,7 @@ package carrental.model.reservation;
 import carrental.Constants;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -14,6 +11,7 @@ import java.util.Date;
  */
 @Entity
 @PersistenceContext(unitName= Constants.RESERVATION_PU)
+@NamedQuery(name = "findById", query = "select r from Reservation r where r.id = :id")
 public class Reservation extends AbstractPersistable<Long> {
 
     // not as key since one customer can reserve the same car several times

@@ -36,29 +36,13 @@ public class AggregationStrategyCarReturn implements AggregationStrategy {
 
         List<Claim> claimsList = oldBody.getClaims();
 
-        for (Claim claim : PickupBean.generateClaims()) {
-            if(!claimsList.stream().anyMatch(x->x.getClaimType() == claim.getClaimType()))
-                claimsList.add(claim);
-        }
-
         newBody.setClaims(claimsList);
         newBody.setId(oldBody.getId());
         newBody.setReturnDate(new Date());
 
         // update the existing message with the added body
         oldExchange.getIn().setBody(newBody);
-        //If claimList empty, then set Header to noClaims
-        if(claimsList.isEmpty())
-        {
-            oldExchange.getIn().setHeader("recipients","direct:billingPoint");
-            System.out.println("ReturnPoint: Car Inspection for CarId = "+ newBody.getReservation().getCarId()+" : No Claims --> Billing Point");
-        }
-        else {
-            oldExchange.getIn().setHeader("recipients", "seda:queue:claimFixCenter,seda:queue:claimFixAggregationPoint");
-            System.out.println("ReturnPoint: Car Inspection for CarId = "+ newBody.getReservation().getCarId()+" : Claims found --> ClaimFixCenter ");
-        }
 
-            oldExchange.getIn().setHeader("claimsCnt+Protocol",claimsList.size()+1);
         // and return it
         return oldExchange;
     }

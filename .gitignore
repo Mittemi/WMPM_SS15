@@ -16,3 +16,4 @@ code/target/
 *.iml
 activemq-data/
 test/
+code/claims/

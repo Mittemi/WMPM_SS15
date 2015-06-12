@@ -14,6 +14,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import java.io.File;
+
 /* http://camel.apache.org/spring-boot.html */
 @EntityScan(basePackages = { "carrental.model.reservation" })       //jpa only
 @SpringBootApplication
@@ -26,10 +28,21 @@ public class CarRentalApplication {
 
         //CLEAN-UP
         cleanupDatabase(applicationContext);
+        cleanupFileSystem(applicationContext);
 
         CamelSpringBootApplicationController applicationController =
                 applicationContext.getBean(CamelSpringBootApplicationController.class);
         applicationController.blockMainThread();
+    }
+
+    private static void cleanupFileSystem(ApplicationContext applicationContext) {
+        File file = new File("claims/");
+
+        if(file.exists() && file.isDirectory()) {
+            for (File claimFile : file.listFiles()) {
+                claimFile.delete();
+            }
+        }
     }
 
     private static void cleanupDatabase(ApplicationContext applicationContext) {

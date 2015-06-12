@@ -1,7 +1,9 @@
 package carrental.beans.returnPoint;
 
 import carrental.Constants;
+import carrental.beans.pickupPoint.PickupBean;
 import carrental.model.pickupPoint.*;
+import carrental.model.reservation.Car;
 import carrental.repository.reservation.CustomerRepository;
 import carrental.repository.reservation.ReservationRepository;
 import org.apache.camel.ProducerTemplate;
@@ -9,11 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.io.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by Constantin on 14.05.2015.
@@ -70,11 +74,61 @@ public class CarReturnSimulation {
         {
             PickupProtocol pickupProtocol = CarQueue.listOfPickups.get(0);
             CarQueue.listOfPickups.remove(pickupProtocol);
+
             ReturnProtocol returnProtocol = new ReturnProtocol();
             returnProtocol.setId(pickupProtocol.getReservation().getCarId());
+
+            CarQueue.listForClaims.add(pickupProtocol.getReservation());
+
             System.out.println("Car with id " + pickupProtocol.getReservation().getCarId() + " arrived at return point");
             producerTemplate.sendBodyAndHeader("seda:queue:carToInspectQueue", returnProtocol, "carId", pickupProtocol.getReservation().getCarId());
         }
+    }
+
+    @Scheduled(fixedRate = 1500)
+    public void createClaimsFile() {
+
+        if(!CarQueue.listForClaims.isEmpty()) {
+
+            Reservation reservation = CarQueue.listForClaims.get(0);
+            System.out.println("INFO: Generating claims list for " + reservation.getReservationId());
+            CarQueue.listForClaims.remove(reservation);
+
+            List<Claim> claims = PickupBean.generateClaims();
+
+            String filename = "claims/claims_" + reservation.getCarId() + "_" + reservation.getReservationId() + ".csv";
+
+            File theDir = new File("claims");
+            if (!theDir.exists()) {
+                try{
+                    theDir.mkdir();
+                }
+                catch(SecurityException se){
+                    //handle it
+                }
+            }
+
+            try(FileWriter fw = new FileWriter(filename )) {
+
+                try(BufferedWriter bw = new BufferedWriter(fw)) {
+
+                //    bw.write("Type;Description\n");
+
+
+                    for (Claim claim : claims) {
+                        bw.write(claim.getClaimType().toString());
+                        bw.write(";");
+                        bw.write(claim.getDescription().replace(";", ""));
+                        bw.write("\n");
+                    }
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
     }
 
 }

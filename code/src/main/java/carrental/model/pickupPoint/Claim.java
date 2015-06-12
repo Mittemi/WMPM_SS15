@@ -1,10 +1,13 @@
 package carrental.model.pickupPoint;
 
+import org.apache.camel.dataformat.bindy.annotation.CsvRecord;
+import org.apache.camel.dataformat.bindy.annotation.DataField;
 import org.springframework.data.annotation.Id;
 
 /**
  * Created by Michael on 13.05.2015.
  */
+@CsvRecord(separator = ";")
 public class Claim {
 
     public Claim() {
@@ -15,8 +18,10 @@ public class Claim {
         this.description = description;
     }
 
+    @DataField(pos = 1)
     private ClaimType claimType;
 
+    @DataField(pos = 2)
     private String description;
 
     public ClaimType getClaimType() {

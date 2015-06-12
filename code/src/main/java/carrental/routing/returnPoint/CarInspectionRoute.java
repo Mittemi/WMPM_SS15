@@ -1,9 +1,14 @@
 package carrental.routing.returnPoint;
 
-import carrental.beans.returnPoint.esb.AddExpectedReturnProcessor;
-import carrental.beans.returnPoint.esb.AggregationStrategyCarReturn;
+import carrental.beans.returnPoint.esb.*;
+import carrental.model.pickupPoint.Claim;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.dataformat.bindy.csv.BindyCsvDataFormat;
 import org.springframework.stereotype.Component;
+
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by Constantin on 12.05.2015.
@@ -13,15 +18,52 @@ public class CarInspectionRoute extends RouteBuilder {
     @Override
     public void configure() throws Exception {
 
-/*
-        from("file://claimlists?noop=true").split(body().tokenize("\n"))
-                .log("Line: ${body}")
-                .unmarshal()
-                .bindy(BindyType.Csv, "carrental.model")
-                .to("mock:update");*/
-
         from("seda:queue:carToInspectQueue")
                 .process(new AddExpectedReturnProcessor())
-                .aggregate(header("carId"), new AggregationStrategyCarReturn()).completionSize(2).recipientList(header("recipients"));
+                .aggregate(header("carId"), new AggregationStrategyCarReturn()).completionSize(2).process(p-> {
+            System.out.println("ESB (RP): Return protocol partly finished, let's check for claims....");
+        }).to("direct:returnPoint.mergeClaims")
+                ;
+
+        from("direct:returnPoint.mergeClaims").aggregate(header("carId"), new AggreationStrategyMergeClaims()).completionSize(2)
+                .process(p -> {
+                    System.out.println("ESB (RP): Return protocol finished, let's see how to proceed...");
+                })
+                .process(new ClaimsRouter()).recipientList(header("recipients"));
+
+        from("file:claims/?noop=true").process(p -> {
+            String fileName = (String)p.getIn().getHeader("CamelFileName");
+
+            fileName = fileName.substring("claims_".length());
+
+            fileName = fileName.substring(0, fileName.length() - 4);
+
+            String[] ids = fileName.split("_");
+
+            long reservationId = Long.parseLong(ids[1]);
+            long carId = Long.parseLong(ids[0]);
+            p.getIn().setHeader("carId", carId);
+            p.getIn().setHeader("reservationId", reservationId);
+
+            System.out.println("ESB (RP): Claims file received from inspection for reservation: " + reservationId);
+        }).
+        choice().when(header("CamelFileLength").isGreaterThan(0))
+            .process(p -> {
+            System.out.println("ESB (RP): Reading Claims from file and starting further processing.");
+           }).unmarshal(new BindyCsvDataFormat(Claim.class)).
+                // when there is only one line in the file we get a single claim
+                // since the aggregator expacts a list we need to deal with this inside this route
+            process(p -> {
+                    if (p.getIn().getBody() instanceof Claim) {
+                        LinkedList<Claim> body = new LinkedList<>();
+                        body.add((Claim)p.getIn().getBody());
+                        p.getIn().setBody(body);
+                    }
+                }).
+        otherwise().setBody().constant(new LinkedList<Claim>())
+            .process(p -> {
+                System.out.println("ESB (RP): No claims for this car.");
+            }).end().
+        to("direct:returnPoint.mergeClaims");
     }
 }
