@@ -54,7 +54,7 @@ public class PickupBean {
         }
         pickupProtocol.setPickupDate(new Date());
 
-        if(random.nextInt(100) < 50) {
+        if(random.nextInt(100) < 10) {
             pickupProtocol.setCanceledPickup(true);
             println("Customer refuses to take this car! Cancel the pickup...");
         }else {
