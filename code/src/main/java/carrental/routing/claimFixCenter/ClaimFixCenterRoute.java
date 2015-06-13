@@ -23,11 +23,11 @@ public class ClaimFixCenterRoute extends RouteBuilder {
                 .split(body())
                 .process(new IdentifyClaimType())
                 .choice() //Distribute to different claimFixCenters with ContentBasedRouter
-                    .when(header("claimType").isEqualTo(ClaimType.Electrical)).process(new ClaimToDtoConverter()).to("activemq:queue:electricStation")
-                    .when(header("claimType").isEqualTo(ClaimType.Cleaning)).process(new ClaimToDtoConverter()).to("activemq:queue:cleaningStation")
-                    .when(header("claimType").isEqualTo(ClaimType.Mechanical)).process(new ClaimToDtoConverter()).to("activemq:queue:mechanicStation")
-                    .when(header("claimType").isEqualTo(ClaimType.Refilling)).process(new ClaimToDtoConverter()).to("activemq:queue:refillStation")
-                    .when(header("claimType").isEqualTo(ClaimType.Paintwork)).process(new ClaimToDtoConverter()).to("activemq:queue:paintStation");
+                .when(header("claimType").isEqualTo(ClaimType.Electrical)).process(new ClaimToDtoConverter()).to("activemq:queue:electricStation")
+                .when(header("claimType").isEqualTo(ClaimType.Cleaning)).process(new ClaimToDtoConverter()).to("activemq:queue:cleaningStation")
+                .when(header("claimType").isEqualTo(ClaimType.Mechanical)).process(new ClaimToDtoConverter()).to("activemq:queue:mechanicStation")
+                .when(header("claimType").isEqualTo(ClaimType.Refilling)).process(new ClaimToDtoConverter()).to("activemq:queue:refillStation")
+                .when(header("claimType").isEqualTo(ClaimType.Paintwork)).process(new ClaimToDtoConverter()).to("activemq:queue:paintStation");
 
 
         from("activemq:queue:claimFixAdapter").process(new Processor() {
@@ -35,8 +35,8 @@ public class ClaimFixCenterRoute extends RouteBuilder {
             public void process(Exchange exchange) throws Exception {
                 ClaimDTO claimdto = exchange.getIn().getBody(ClaimDTO.class);
                 exchange.getIn().setBody(claimdto.getClaim());
-                exchange.getIn().setHeader("carId",claimdto.getCarId());
-                exchange.getIn().setHeader("protocolType",claimdto.getProtocolType());
+                exchange.getIn().setHeader("carId", claimdto.getCarId());
+                exchange.getIn().setHeader("protocolType", claimdto.getProtocolType());
             }
         }).to("seda:queue:claimFixAggregationPoint");
 
@@ -47,7 +47,7 @@ public class ClaimFixCenterRoute extends RouteBuilder {
                 .completionSize(header("claimsCnt+Protocol")).process(new Processor() {
             @Override
             public void process(Exchange exchange) throws Exception {
-                System.out.println("ClaimFixCenter: All claims for car with ID="+exchange.getIn().getHeader("carId")+" fixed.");
+                System.out.println("ClaimFixCenter: All claims for car with ID=" + exchange.getIn().getHeader("carId") + " fixed.");
             }
         })
                 .choice()
@@ -55,7 +55,7 @@ public class ClaimFixCenterRoute extends RouteBuilder {
                 .process(new Processor() {
                     @Override
                     public void process(Exchange exchange) throws Exception {
-                        System.out.println("ESB (ClaimFixCenter): Car with ID="+exchange.getIn().getHeader("carId")+" returned to PickupPoint - Available again.");
+                        System.out.println("ESB (ClaimFixCenter): Car with ID=" + exchange.getIn().getHeader("carId") + " returned to PickupPoint - Available again.");
                     }
                 }).to("direct:pickupPoint.callAvailability.available")
                 .when(header("protocolType").isEqualTo(ReturnProtocol.class.getName().toString()))
@@ -66,27 +66,7 @@ public class ClaimFixCenterRoute extends RouteBuilder {
                     }
                 })
                 .to("direct:billingPoint");
-<<<<<<< HEAD
 
-
-        /*("direct:billingPoint").process(new Processor() {
-=======
-        /*
-        from("direct:billingPoint").process(new Processor() {
->>>>>>> master
-            @Override
-            public void process(Exchange exchange) throws Exception {
-                System.out.println("Hallo hier der BillingPoint");
-            }
-<<<<<<< HEAD
-        });*/
-
-
-=======
-        });
-         */
->>>>>>> master
     }
-
 
 }
