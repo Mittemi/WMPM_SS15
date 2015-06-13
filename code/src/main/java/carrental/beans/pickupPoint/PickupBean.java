@@ -9,6 +9,9 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.ProducerTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.annotation.JmsListener;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -20,19 +23,20 @@ import java.util.Random;
  * Created by Michael on 23.05.2015.
  * Bean simulating the application at the pickup point.
  *
- * Creates a PickupProtocol and adds a random number of claims. Might
+ * Creates a PickupProtocol and adds a random number of claims.
  */
 @Component
 public class PickupBean {
 
-    @Autowired
-    private ProducerTemplate producerTemplate;
 
     private void println(String str) {
         System.out.println("PickupPoint: " + str);
     }
 
+    @Autowired
+    private JmsTemplate jmsTemplate;
 
+    @JmsListener(destination = "createPickupProtocolQueue")
     public void showCar(Reservation reservation) {
 
         Random random = new Random(new Date().getTime());
@@ -57,7 +61,7 @@ public class PickupBean {
             println("Pickup done, have a safe trip...");
         }
 
-        producerTemplate.sendBody("direct:pickupPoint.PickupProtocol.created", pickupProtocol);
+        jmsTemplate.convertAndSend("createPickupProtocolDoneQueue", pickupProtocol);
     }
 
     public static List<Claim> generateClaims() {

@@ -22,8 +22,7 @@ public class CarInspectionRoute extends RouteBuilder {
                 .process(new AddExpectedReturnProcessor())
                 .aggregate(header("carId"), new AggregationStrategyCarReturn()).completionSize(2).process(p-> {
             System.out.println("ESB (RP): Return protocol partly finished, let's check for claims....");
-        }).to("direct:returnPoint.mergeClaims")
-                ;
+        }).to("direct:returnPoint.mergeClaims");
 
         from("direct:returnPoint.mergeClaims").aggregate(header("carId"), new AggreationStrategyMergeClaims()).completionSize(2)
                 .process(p -> {
@@ -31,6 +30,7 @@ public class CarInspectionRoute extends RouteBuilder {
                 })
                 .process(new ClaimsRouter()).recipientList(header("recipients"));
 
+        // reads all the claims (csv) files from the file system parses them and forwards the extracted claims list to the inpectionqueue where it is merged using an aggregator into the return protocol
         from("file:claims/?noop=true").process(p -> {
             String fileName = (String)p.getIn().getHeader("CamelFileName");
 

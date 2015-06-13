@@ -48,6 +48,8 @@ public class PrintBean {
         exchange.getIn().setBody(f);
         exchange.setProperty("receiverEmailAddress", invoice.getEmailAddress());
         exchange.setProperty("receiverName", invoice.getCustomer());
+        
+        System.out.println("Billingpoint: Indoice.pdf - generation completed.");
     }
 	
     private File generatePDF(Invoice invoice) throws DocumentException, FileNotFoundException{

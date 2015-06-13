@@ -3,13 +3,14 @@ package carrental.model.pickupPoint;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Michael on 13.05.2015.
  */
 @Document(collection = "reservation")
-public class Reservation {
+public class Reservation implements Serializable {
 
     private Long carId;
 

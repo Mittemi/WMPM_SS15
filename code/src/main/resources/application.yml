@@ -1,7 +1,11 @@
 server:
      port: 9000
 spring:
+<<<<<<< HEAD
   profiles.active: consti
+=======
+  profiles.active: alex
+>>>>>>> master
 logging:
   level:
     org:

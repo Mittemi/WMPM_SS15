@@ -66,16 +66,26 @@ public class ClaimFixCenterRoute extends RouteBuilder {
                     }
                 })
                 .to("direct:billingPoint");
+<<<<<<< HEAD
 
 
         /*("direct:billingPoint").process(new Processor() {
+=======
+        /*
+        from("direct:billingPoint").process(new Processor() {
+>>>>>>> master
             @Override
             public void process(Exchange exchange) throws Exception {
                 System.out.println("Hallo hier der BillingPoint");
             }
+<<<<<<< HEAD
         });*/
 
 
+=======
+        });
+         */
+>>>>>>> master
     }
 
 
