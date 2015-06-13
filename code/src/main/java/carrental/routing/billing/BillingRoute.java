@@ -8,9 +8,9 @@ import carrental.CarRentalConfig;
 import carrental.beans.billing.MailingBean;
 import carrental.beans.billing.PrintBean;
 import carrental.beans.billing.BillingBean;
-import carrental.model.reservation.Car;
-import carrental.model.reservation.Customer;
-import carrental.model.reservation.Reservation;
+import carrental.beans.billing.esb.EnricherBean;
+import carrental.beans.billing.esb.TransformatorBean;
+
 
 /**
  * Created by Alexander on 20.05.2015
@@ -26,7 +26,8 @@ public class BillingRoute  extends RouteBuilder{
 		//String enrichQuery="jpa://" + Customer.class.getName() + "?consumer.query=select c from Customer c";//+car id here
 		//from("direct:billingPoint").pollEnrich(enrichQuery, new BillingAggregationStrategy()).bean(BillingBean.class).wireTap(mongoEndpointString).bean(PrintBean.class).bean(MailingBean.class);
 		//.enrich(enrichQuery, new BillingAggregationStrategy())
-		from("direct:billingPoint").bean(BillingBean.class).wireTap(mongoEndpointString).bean(PrintBean.class).bean(MailingBean.class);
+		
+		from("direct:billingPoint").bean(EnricherBean.class).bean(TransformatorBean.class).bean(BillingBean.class).wireTap(mongoEndpointString).bean(PrintBean.class).bean(MailingBean.class);
 
 	}
 }

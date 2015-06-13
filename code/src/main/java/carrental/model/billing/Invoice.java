@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,7 +39,9 @@ public class Invoice implements Serializable {
     private String emailAddress;
 
     private int number;
-
+    
+    private BigDecimal drivingCosts;
+    
     public Invoice() {
         claims = new LinkedList<>();
     }
@@ -103,5 +106,13 @@ public class Invoice implements Serializable {
     
     public void setEmailAddress(String emailAddress){
     	this.emailAddress=emailAddress;
+    }
+    
+    public BigDecimal getDrivingCosts(){
+    	return this.drivingCosts;
+    }
+    
+    public void setDrivingCosts(BigDecimal drivingCosts){
+    	this.drivingCosts=drivingCosts;
     }
 }
