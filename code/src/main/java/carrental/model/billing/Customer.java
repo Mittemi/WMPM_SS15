@@ -4,6 +4,10 @@ import java.util.Date;
 
 import carrental.model.reservation.Sex;
 
+/**
+ * Created by Alexander on 28.05.2015
+ */
+
 public class Customer {
 	private String name;
     private String address;

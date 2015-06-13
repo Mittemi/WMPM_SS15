@@ -11,6 +11,10 @@ import org.apache.camel.builder.Builder;
 import org.apache.camel.component.mail.MailEndpoint;
 import org.springframework.stereotype.Component;
 
+/**
+ * Created by Alexander on 30.05.2015
+ */
+
 @Component
 public class MailingBean {
 	public void sendEmail(Exchange exchange) throws Exception{
@@ -19,9 +23,9 @@ public class MailingBean {
 		String destinationEmailAddress = (String) exchange.getProperty("receiverEmailAddress");
 		String receiverName = (String) exchange.getProperty("receiverName");
 				
-		final MailEndpoint ep = (MailEndpoint) camelContext.getEndpoint("smtp://mail.eclipso.de:587?password=RAW(12345678)&username=RAW(carrentalag2@eclipso.at)");
+		final MailEndpoint ep = (MailEndpoint) camelContext.getEndpoint("smtp://mail.eclipso.de:587?password=RAW(12345678)&username=RAW(carrentalag1@eclipso.at)");
         ep.getConfiguration().setProtocol("smtp");
-        ep.getConfiguration().setFrom("carrentalag2@eclipso.at");
+        ep.getConfiguration().setFrom("carrentalag@eclipso.at");
         ep.getConfiguration().setTo(destinationEmailAddress);
         
         Exchange exchangeMail=ep.createExchange();
@@ -35,6 +39,6 @@ public class MailingBean {
 		producer.process(exchangeMail); 
 		producer.stop();
 		
-		System.out.println("BillingPoint: E-Mail with Invoice.pdf sent to "+receiverName+" ("+destinationEmailAddress+")");
+		System.out.println("BillingPoint.Email_Sender: E-Mail with the file '"+file.getName()+"' sent to "+receiverName+" ("+destinationEmailAddress+")");
 	}
 }

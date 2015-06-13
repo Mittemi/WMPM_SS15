@@ -1,25 +1,16 @@
 package carrental.model.billing;
 
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.stereotype.Component;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
-
 /**
- * Created by Michael on 13.05.2015.
+ * Created by Alexander on 06.06.2015.
  */
 @Document(collection = "invoice")
 public class Invoice implements Serializable {
@@ -35,7 +26,7 @@ public class Invoice implements Serializable {
         
     private Car car;
     
-    private long daysUsed;
+    private final int daysUsed;
 
     //driving costs
     private BigDecimal drivingCostsBeforeTax;
@@ -54,8 +45,10 @@ public class Invoice implements Serializable {
 	private double salesTaxRate;
 	
 	private Customer customer;
-    
-    public Invoice(List<Claim> claims, Date date, int number, Car car, long daysUsed, BigDecimal drivingCostsBeforeTax, double salesTaxRate, Customer customer) {
+    private Date reservationDate;
+    private Date returnDate;
+	
+    public Invoice(List<Claim> claims, Date date, int number, Car car, int daysUsed, BigDecimal drivingCostsBeforeTax, double salesTaxRate, Customer customer, Date reservationDate, Date returnDate) {
 		super();
 		this.claims = claims;
 		this.date = date;
@@ -65,6 +58,8 @@ public class Invoice implements Serializable {
 		this.drivingCostsBeforeTax = drivingCostsBeforeTax;
 		this.salesTaxRate = salesTaxRate;
 		this.customer=customer;
+		this.reservationDate=reservationDate;
+		this.returnDate=returnDate;
 		
 		//calculate totalServiceCostsBeforeTax
 		double d=0.0;
@@ -132,12 +127,8 @@ public class Invoice implements Serializable {
 		this.car = car;
 	}
 
-	public long getDaysUsed() {
+	public int getDaysUsed() {
 		return daysUsed;
-	}
-
-	public void setDaysUsed(long daysUsed) {
-		this.daysUsed = daysUsed;
 	}
 	
 	public BigDecimal getTotalCostsBeforeTax() {
@@ -183,5 +174,13 @@ public class Invoice implements Serializable {
 	public BigDecimal getServiceCosts() {
 		return serviceCosts;
 	}
-	
+
+	public Date getReservationDate() {
+		return reservationDate;
+	}
+
+	public Date getReturnDate() {
+		return returnDate;
+	}
+
 }

@@ -12,9 +12,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.springframework.stereotype.Component;
 
 /**
- * Created by Michael on 13.05.2015.
+ * Created by Michael & Alexander on 13.05.2015.
  */
-@XmlRootElement
 public class Claim implements Serializable {
 
     private ClaimType claimType;
@@ -23,7 +22,6 @@ public class Claim implements Serializable {
 
     private BigDecimal costs;
     
-    @XmlElement
     public ClaimType getClaimType() {
         return claimType;
     }
@@ -32,7 +30,6 @@ public class Claim implements Serializable {
         this.claimType = claimType;
     }
     
-    @XmlElement
     public String getDescription() {
         return description;
     }
@@ -41,7 +38,6 @@ public class Claim implements Serializable {
         this.description = description;
     }
     
-    @XmlElement
     public BigDecimal getCosts() {
         return this.costs;
     }

@@ -11,13 +11,23 @@ import java.io.Serializable;
  */
 @CsvRecord(separator = ";")
 public class Claim implements Serializable {
-
+	
+	//For Claim-Filtering
+	private boolean customerClaim=true;
+	
     public Claim() {
     }
 
     public Claim(ClaimType claimType, String description) {
         this.claimType = claimType;
         this.description = description;
+    }
+    
+    //For Claim-Filtering
+    public Claim(ClaimType claimType, String description, boolean customerClaim) {
+        this.claimType = claimType;
+        this.description = description;
+        this.customerClaim=customerClaim;
     }
 
     @DataField(pos = 1)
@@ -45,5 +55,10 @@ public class Claim implements Serializable {
     @Override
     public String toString() {
         return "Claim: (" + claimType + ", [" + description + "])";
+    }
+    
+    //For Claim-Filtering
+    public boolean isCustomerClaim(){
+    	return this.customerClaim=customerClaim;
     }
 }

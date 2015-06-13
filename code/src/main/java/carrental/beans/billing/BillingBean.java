@@ -7,16 +7,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
-
 import org.apache.camel.Exchange;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
-
 import carrental.Constants;
 import carrental.MongoDbConfiguration;
 import carrental.beans.reservation.CarDTO;
@@ -29,8 +27,6 @@ import carrental.model.billing.ReturnProtocol;
 
 /**
  * Created by Alexander
- * 
- *
  */
 
 @Component
@@ -52,7 +48,7 @@ public class BillingBean {
         
         //Create invoice and transform model.pickupPoint.Claims into model.billing.Claims
         exchange.getIn().setBody(createInvoice(returnProtocol, customer, car));
-        System.out.println("Billingpoint: Invoice-calculation completed.");
+        System.out.println("BillingPoint.Invoice_Calculator: Invoice-calculation completed.");
 	}
 	
 	
@@ -65,7 +61,7 @@ public class BillingBean {
 			claims.add(c);
 		}
 		
-		Invoice invoice=new Invoice(claims, new Date(), generateInvoiceNumber(),car,simulateDaysUsed(returnProtocol),calculateDrivingCosts(simulateDaysUsed(returnProtocol),car),0.2, customer);
+		Invoice invoice=new Invoice(claims, new Date(), generateInvoiceNumber(),car,simulateDaysUsed(returnProtocol),calculateDrivingCosts(simulateDaysUsed(returnProtocol),car),0.2, customer, returnProtocol.getReservationDate(), simulateReturnDate(returnProtocol));
 		
 		return invoice;
 	}
@@ -83,17 +79,19 @@ public class BillingBean {
 		return new BigDecimal(daysUsed*car.getPricePerDay()).setScale(2, RoundingMode.FLOOR);
 	}
 	
-	private long simulateDaysUsed(ReturnProtocol returnProtocol){
+	private int simulateDaysUsed(ReturnProtocol returnProtocol){
+		DateTime newReturnDate=new DateTime(simulateReturnDate(returnProtocol));
+		DateTime reservationDate=new DateTime(returnProtocol.getReservationDate().getTime());
+		return Days.daysBetween(reservationDate.withTimeAtStartOfDay(), newReturnDate.withTimeAtStartOfDay()).getDays();
+	}
+	
+	private Date simulateReturnDate(ReturnProtocol returnProtocol){
 		Calendar c = Calendar.getInstance();
 		c.setTime(returnProtocol.getReturnDate()); 
-		
 		int randomNumberOfDays = (int)(new Random().nextGaussian()*4 + 23);
 		c.add(Calendar.DATE, randomNumberOfDays); // Adding a randomNumberOfDays for simulationPurposes days
-		
 		Date newReturnDate=c.getTime();
-		long dif = newReturnDate.getTime() - returnProtocol.getReservationDate().getTime();
-		
-		return TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS);
+		return newReturnDate;
 	}
 	
 	private static void setCarAvailable(String licensePlate){  

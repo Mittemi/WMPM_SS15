@@ -8,9 +8,15 @@ import org.springframework.stereotype.Component;
 
 import carrental.model.billing.ExchangeWrapper;
 
+/**
+ * Created by Alexander on 13.06.2015
+ */
+
 @Component
-public class TransformatorBean {
+public class TranslatorBean {
 	public void transform(Exchange exchange){
+		System.out.println("BillingPoint.Translator: Transforming all objects into formats which are processable by the local applications.");
+		
 		ExchangeWrapper exchangeWrapper=exchange.getIn().getBody(ExchangeWrapper.class);
 		
 		carrental.model.reservation.Customer in_customer=exchangeWrapper.getIn_customer();

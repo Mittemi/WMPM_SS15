@@ -1,5 +1,9 @@
 package carrental.model.billing;
 
+/**
+ * Created by Alexander on 06.06.2015
+ */
+
 public class ExchangeWrapper {
 	private carrental.model.reservation.Customer in_customer;
 	private carrental.model.reservation.Car in_car;

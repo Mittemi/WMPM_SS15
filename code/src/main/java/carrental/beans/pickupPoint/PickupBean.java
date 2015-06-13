@@ -76,31 +76,36 @@ public class PickupBean {
             switch (random.nextInt(used.length + 1)) {
                 case 0:
                     if(!used[0]) {
-                        claimList.add(new Claim(ClaimType.Cleaning, "Car requires cleaning, still dirty!"));
+                    	//claimList.add(new Claim(ClaimType.Cleaning, "Car requires cleaning, still dirty!"));
+                    	claimList.add(new Claim(ClaimType.Cleaning, "Car requires cleaning, still dirty!", false));
                     }
                     used[0] = true;
                     break;
                 case 1:
                     if(!used[1]) {
-                        claimList.add(new Claim(ClaimType.Electrical, "Lights are not working"));
+                        //claimList.add(new Claim(ClaimType.Electrical, "Lights are not working"));
+                    	claimList.add(new Claim(ClaimType.Electrical, "Lights are not working", false));
                     }
                     used[1] = true;
                     break;
                 case 2:
                     if(!used[2]) {
-                        claimList.add(new Claim(ClaimType.Mechanical, "Control lamp indicates error!"));
+                        //claimList.add(new Claim(ClaimType.Mechanical, "Control lamp indicates error!"));
+                    	claimList.add(new Claim(ClaimType.Mechanical, "Control lamp indicates error!", false));
                     }
                     used[2] = true;
                     break;
                 case 3:
                     if(!used[3]) {
-                        claimList.add(new Claim(ClaimType.Refilling, "Someone forgot to refill!"));
+                    	//claimList.add(new Claim(ClaimType.Refilling, "Someone forgot to refill!"));
+                    	claimList.add(new Claim(ClaimType.Refilling, "Someone forgot to refill!", false));
                     }
                     used[3] = true;
                     break;
                 case 4:
                     if(!used[4]) {
-                        claimList.add(new Claim(ClaimType.Paintwork, "Don't know what they thought when they accepted this car during return!"));
+                    	//claimList.add(new Claim(ClaimType.Paintwork, "Don't know what they thought when they accepted this car during return!"));
+                    	claimList.add(new Claim(ClaimType.Paintwork, "Don't know what they thought when they accepted this car during return!", false));
                     }
                     used[4] = true;
                     break;

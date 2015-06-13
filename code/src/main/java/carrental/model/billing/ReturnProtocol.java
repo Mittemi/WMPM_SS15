@@ -5,6 +5,10 @@ import java.util.List;
 
 import carrental.model.billing.Claim;
 
+/**
+ * Created by Alexander on 28.05.2015
+ */
+
 public class ReturnProtocol {
 	private Long id;
 	private List<Claim> claims;

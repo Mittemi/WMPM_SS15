@@ -2,6 +2,10 @@ package carrental.model.billing;
 
 import carrental.model.reservation.CarState;
 
+/**
+ * Created by Alexander on 28.05.2015
+ */
+
 public class Car {
 	private String description;
     private String licensePlate;

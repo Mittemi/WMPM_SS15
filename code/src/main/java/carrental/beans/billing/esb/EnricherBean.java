@@ -1,17 +1,18 @@
 package carrental.beans.billing.esb;
 
-import java.util.HashMap;
-
 import org.apache.camel.Exchange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import carrental.model.billing.ExchangeWrapper;
 import carrental.model.pickupPoint.ReturnProtocol;
 import carrental.model.reservation.Car;
 import carrental.model.reservation.Customer;
 import carrental.repository.reservation.CarRepository;
 import carrental.repository.reservation.CustomerRepository;
+
+/**
+ * Created by Alexander on 13.06.2015
+ */
 
 @Component
 public class EnricherBean {
@@ -23,10 +24,9 @@ public class EnricherBean {
 	
 	public void enrich(Exchange exchange) throws Exception {
 		ReturnProtocol returnProtocol=exchange.getIn().getBody(ReturnProtocol.class);
-		System.out.println("Billingpoint: Return Protocol with the ID="+returnProtocol.getId()+"arrived at Billingpoint");
+		System.out.println("BillingPoint: Return Protocol with the ID="+returnProtocol.getId()+"arrived at Billingpoint");
 		
-        //enrich
-		Iterable<carrental.model.reservation.Customer> customers= customerRepo.findAll();
+        System.out.println("BillingPoint.Enricher: Enriching the exchange object with necessary customer-data and car-data.");
 		Customer customer = customerRepo.findOne(returnProtocol.getReservation().getCustomerId());
 		Car car=carRepo.findOne(returnProtocol.getReservation().getCarId());
 		
@@ -37,6 +37,6 @@ public class EnricherBean {
 		
 		exchange.getIn().setBody(exchangeWrapper);
     	
-		System.out.println("BillingPoint: Exchanged object enriched with additional data.");
+		System.out.println("BillingPoint.Enricher: Exchanged object enriched with additional data.");
     }
 }
