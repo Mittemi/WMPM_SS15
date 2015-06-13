@@ -67,22 +67,10 @@ public class CarReturnSimulation {
 
 
     }
-    @Scheduled(fixedRate = 3000)
+    //@Scheduled(fixedRate = 3000)
     public void carReturned()
     {
-        if(!CarQueue.listOfPickups.isEmpty())
-        {
-            PickupProtocol pickupProtocol = CarQueue.listOfPickups.get(0);
-            CarQueue.listOfPickups.remove(pickupProtocol);
 
-            ReturnProtocol returnProtocol = new ReturnProtocol();
-            returnProtocol.setId(pickupProtocol.getReservation().getCarId());
-
-            CarQueue.listForClaims.add(pickupProtocol.getReservation());
-
-            System.out.println("Car with id " + pickupProtocol.getReservation().getCarId() + " arrived at return point");
-            producerTemplate.sendBodyAndHeader("seda:queue:carToInspectQueue", returnProtocol, "carId", pickupProtocol.getReservation().getCarId());
-        }
     }
 
     @Scheduled(fixedRate = 1500)

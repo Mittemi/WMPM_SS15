@@ -74,6 +74,6 @@ public class PickupProtocol implements Serializable {
 
     @Override
     public String toString() {
-        return "PickupProtocol (" + this.getId() + "): Reservation-ID:" + this.getReservation().getReservationId() + " [" + this.claims.stream().map(x -> x.toString()).collect(Collectors.joining(", ")) + "]";
+        return "PickupProtocol Reservation-ID:" + this.getReservation().getReservationId() + " [" + this.claims.stream().map(x -> x.toString()).collect(Collectors.joining(", ")) + "]";
     }
 }

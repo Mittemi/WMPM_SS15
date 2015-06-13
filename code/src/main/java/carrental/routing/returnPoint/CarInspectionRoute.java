@@ -11,18 +11,21 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by Constantin on 12.05.2015.
+ * Created by Constantin and Michael on 12.05.2015.
  */
 @Component
 public class CarInspectionRoute extends RouteBuilder {
     @Override
     public void configure() throws Exception {
 
-        from("seda:queue:carToInspectQueue")
-                .process(new AddExpectedReturnProcessor())
-                .aggregate(header("carId"), new AggregationStrategyCarReturn()).completionSize(2).process(p-> {
-            System.out.println("ESB (RP): Return protocol partly finished, let's check for claims....");
-        }).to("direct:returnPoint.mergeClaims");
+        from("activemq:queue:esb.returnPoint.expectedReturns").bean(PickUpProtocolTranslator.class).to("activemq:queue:returnPoint.expectedReturns");
+
+        from("activemq:queue:carToInspectQueue")
+                .process(p -> {
+                    System.out.println("ESB (RP): Return protocol partly finished, let's check for claims....");
+                })
+                .setHeader("carId", simple("${body.getReservation().getCarId()}"))
+                .to("direct:returnPoint.mergeClaims");
 
         from("direct:returnPoint.mergeClaims").aggregate(header("carId"), new AggreationStrategyMergeClaims()).completionSize(2)
                 .process(p -> {

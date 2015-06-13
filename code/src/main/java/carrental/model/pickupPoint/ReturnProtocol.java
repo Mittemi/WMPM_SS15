@@ -3,6 +3,7 @@ package carrental.model.pickupPoint;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  * Created by Michael on 14.05.2015.
  */
 @Document(collection = "returnProtocols")
-public class ReturnProtocol {
+public class ReturnProtocol implements Serializable {
 
     @Id
     private Long id;

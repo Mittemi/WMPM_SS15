@@ -58,7 +58,7 @@ public class StartPickupRoute extends RouteBuilder {
 
         // queue for car return
         from("direct:StartPickupRoute.internal").wireTap("direct:pickupPoint.callAvailability.inuse")
-                .setHeader("carId", simple("${body.getReservation().getCarId()}")).to("seda:queue:carToInspectQueue");
+                .setHeader("carId", simple("${body.getReservation().getCarId()}")).to("activemq:queue:esb.returnPoint.expectedReturns");
 
         // car in use
         from("direct:pickupPoint.callAvailability.inuse")

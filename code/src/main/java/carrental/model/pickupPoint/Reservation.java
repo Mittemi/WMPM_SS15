@@ -79,6 +79,6 @@ public class Reservation implements Serializable {
 
     @Override
     public String toString() {
-        return "Reservation [" + this.getId() + ", Car: " + this.getCarId() + ", Reservation: " + this.getReservationId() + ", Customer: " + this.getCustomerId() + "]";
+        return "Reservation [Car: " + this.getCarId() + ", Reservation: " + this.getReservationId() + ", Customer: " + this.getCustomerId() + "]";
     }
 }
