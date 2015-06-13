@@ -19,7 +19,7 @@ public class TransformatorBean {
 		
 		List<carrental.model.pickupPoint.Claim> in_claims=in_returnProtocol.getClaims();
 
-		carrental.model.billing.Customer out_customer=new carrental.model.billing.Customer(in_customer.getName(),in_customer.getAddress(),in_customer.getBirthday(),in_customer.getSex(),in_customer.getDrivingLicense());
+		carrental.model.billing.Customer out_customer=new carrental.model.billing.Customer(in_customer.getName(),in_customer.getAddress(),in_customer.getBirthday(),in_customer.getSex(),in_customer.getDrivingLicense(), "max.duestermann@gmx.at"); //using only one email-address for simulation purposes
 		carrental.model.billing.Car out_car=new carrental.model.billing.Car(in_car.getDescription(),in_car.getLicensePlate(),in_car.getColor(),in_car.getPower(),in_car.getCarState(),in_car.getPricePerDay());
 		
 		List<carrental.model.billing.Claim> out_claims=new ArrayList<carrental.model.billing.Claim>();

@@ -9,19 +9,13 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
-import carrental.CarRentalConfig;
 import carrental.MongoDbConfiguration;
 import carrental.model.billing.Claim;
 import carrental.model.billing.Invoice;
 
 import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.Date;
 
 import com.itextpdf.text.Anchor;
@@ -46,8 +40,8 @@ public class PrintBean {
         File f = generatePDF(invoice);
         //checkDB(); //method for db-testing purposes
         exchange.getIn().setBody(f);
-        exchange.setProperty("receiverEmailAddress", invoice.getEmailAddress());
-        exchange.setProperty("receiverName", invoice.getCustomer());
+        exchange.setProperty("receiverEmailAddress", invoice.getCustomer().getEmailAddress());
+        exchange.setProperty("receiverName", invoice.getCustomer().getName());
         
         System.out.println("Billingpoint: Indoice.pdf - generation completed.");
     }
@@ -103,18 +97,18 @@ public class PrintBean {
 
         Paragraph subParagraph= new Paragraph("Travel costs");
 	    addEmptyLine(subParagraph, 1);
-
         Section section = chapter.addSection(subParagraph);
-        
         createTravelCostsTable(section,invoice);
         
         Paragraph subParagraph2 = new Paragraph("Service costs");
 	    addEmptyLine(subParagraph2, 1);
-
         Section section2 = chapter.addSection(subParagraph2);
-        
         createServiceCostsTable(section2, invoice);
-
+        
+        Paragraph subParagraph3 = new Paragraph("Total costs");
+        addEmptyLine(subParagraph3, 1);
+        Section section3 = chapter.addSection(subParagraph3);
+        createTotalCostsTable(section3,invoice);
         document.add(chapter);
 
     }
@@ -139,23 +133,19 @@ public class PrintBean {
 	    table.setHeaderRows(1);
 	    
 	    //Do some useful calculations here
-	    table.addCell("Travel costs ");
-	    table.addCell("1350.50 EUR");
-	    table.addCell("sum taxes");
-	    table.addCell("366.88 EUR");
+	    
+	    table.addCell("Travel costs before tax ");
+	    table.addCell(invoice.getDrivingCostsBeforeTax()+" EUR");
+	    table.addCell("sales tax ("+invoice.getSalesTaxRate()*100+" %)");
+	    table.addCell(invoice.getSalesTaxAmount_driving() + " EUR");
 	    table.addCell("total");
-	    table.addCell("1717.38 EUR");
+	    table.addCell(invoice.getDrivingCosts()+" EUR");
 	    
 	    section.add(table);
     }
     
     private static void createServiceCostsTable(Section section, Invoice invoice) throws BadElementException {
     	    PdfPTable table = new PdfPTable(2);
-
-    	    // t.setBorderColor(BaseColor.GRAY);
-    	    // t.setPadding(4);
-    	    // t.setSpacing(4);
-    	    // t.setBorderWidth(1);
 
     	    PdfPCell c1 = new PdfPCell(new Phrase("cost category"));
     	    c1.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -167,18 +157,44 @@ public class PrintBean {
 
     	    table.setHeaderRows(1);
     	        	    
-    	    BigDecimal sumCosts=new BigDecimal(0);
     	    
     	    for(Claim c:invoice.getClaims()){
     	    	table.addCell(c.getClaimType().name()+" service");
     	    	table.addCell(c.getCosts()+" EUR");
-    	    	sumCosts=sumCosts.add(c.getCosts());
     	    }
     	    
+    	    table.addCell("service costs before tax");
+    	    table.addCell(invoice.getTotalServiceCostsBeforeTax()+" EUR");
+    	    
+    	    table.addCell("sales tax ("+invoice.getSalesTaxRate()*100+" %)");
+    	    table.addCell(invoice.getSalesTaxAmount_service()+" EUR");
     	    table.addCell("total");
-    	    table.addCell(sumCosts+" EUR");
+    	    table.addCell(invoice.getServiceCosts()+" EUR");
     	    
     	    section.add(table);
+    }
+    
+    private static void createTotalCostsTable(Section section, Invoice invoice) throws BadElementException {
+	    PdfPTable table = new PdfPTable(2);
+
+	    PdfPCell c1 = new PdfPCell(new Phrase("cost category"));
+	    c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+	    table.addCell(c1);
+
+	    c1 = new PdfPCell(new Phrase("fees"));
+	    c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+	    table.addCell(c1);
+
+	    table.setHeaderRows(1);
+	        	    
+	    table.addCell("Total travel costs");
+	    table.addCell(invoice.getDrivingCosts()+" EUR");
+	    table.addCell("Total service costs");
+	    table.addCell(invoice.getServiceCosts()+" EUR");
+	    table.addCell("total");
+	    table.addCell(invoice.getTotalCosts()+" EUR");
+	    
+	    section.add(table);
     }
     
     //For testing purposes

@@ -2,12 +2,12 @@ package carrental.beans.billing;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.camel.Exchange;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,13 +52,12 @@ public class BillingBean {
         
         //Create invoice and transform model.pickupPoint.Claims into model.billing.Claims
         exchange.getIn().setBody(createInvoice(returnProtocol, customer, car));
-        
         System.out.println("Billingpoint: Invoice-calculation completed.");
 	}
 	
 	
 	private Invoice createInvoice(ReturnProtocol returnProtocol, Customer customer, Car car) throws Exception{
-		Invoice invoice=new Invoice();
+		
 		List<Claim> claims=new ArrayList<Claim>();
 		
 		for(Claim c:returnProtocol.getClaims()){
@@ -66,13 +65,7 @@ public class BillingBean {
 			claims.add(c);
 		}
 		
-		invoice.setClaims(claims);
-		invoice.setDrivingCosts(simulateDrivingCosts(returnProtocol,car));
-		invoice.setDate(new Date());
-        invoice.setNumber(generateInvoiceNumber());
-        invoice.setEmailAddress("max.duestermann@gmx.at");  //using only one email-address for simulation purposes!
-        invoice.setCustomer(customer.getName());
-        invoice.setAddress(customer.getAddress());
+		Invoice invoice=new Invoice(claims, new Date(), generateInvoiceNumber(),car,simulateDaysUsed(returnProtocol),calculateDrivingCosts(simulateDaysUsed(returnProtocol),car),0.2, customer);
 		
 		return invoice;
 	}
@@ -86,21 +79,21 @@ public class BillingBean {
 		return new BigDecimal(r).setScale(2, RoundingMode.FLOOR);
 	}
 	
-	private static BigDecimal simulateDrivingCosts(ReturnProtocol returnProtocol, Car car){
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	private static BigDecimal calculateDrivingCosts(long daysUsed, Car car){		
+		return new BigDecimal(daysUsed*car.getPricePerDay()).setScale(2, RoundingMode.FLOOR);
+	}
+	
+	private long simulateDaysUsed(ReturnProtocol returnProtocol){
 		Calendar c = Calendar.getInstance();
-		c.setTime(returnProtocol.getReturnDate()); // Now use today date.
+		c.setTime(returnProtocol.getReturnDate()); 
 		
-		Random r = new Random();
-		int randomNumberOfDays = r.nextInt(365-1) + 1;
+		int randomNumberOfDays = (int)(new Random().nextGaussian()*4 + 23);
 		c.add(Calendar.DATE, randomNumberOfDays); // Adding a randomNumberOfDays for simulationPurposes days
 		
 		Date newReturnDate=c.getTime();
+		long dif = newReturnDate.getTime() - returnProtocol.getReservationDate().getTime();
 		
-		long daysUsed = newReturnDate.getTime() - returnProtocol.getReservationDate().getTime();
-		double drivingCosts=daysUsed*car.getPricePerDay();
-		
-		return new BigDecimal(drivingCosts).setScale(2, RoundingMode.FLOOR);
+		return TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS);
 	}
 	
 	private static void setCarAvailable(String licensePlate){  
@@ -114,7 +107,6 @@ public class BillingBean {
 	 * Else return 1.
 	 */
 	private int generateInvoiceNumber() throws Exception{
-		System.out.println("In BillingBean: mongoConfig="+mongoConfig);
 		DBCursor dbCursor=mongoConfig.mongo().getDB("carrental").getCollection("invoice").find().sort( new BasicDBObject( "number" , -1 ) ).limit(1);
 		if(dbCursor.hasNext())
 			return ((Integer) dbCursor.next().get("number")) + 1;

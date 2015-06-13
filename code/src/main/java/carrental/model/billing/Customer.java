@@ -10,15 +10,17 @@ public class Customer {
     private Date birthday;
     private Sex sex;
     private String drivingLicense;
+    private String emailAddress;
 	
     public Customer(String name, String address, Date birthday, Sex sex,
-			String drivingLicense) {
+			String drivingLicense, String emailAddress) {
 		super();
 		this.name = name;
 		this.address = address;
 		this.birthday = birthday;
 		this.sex = sex;
 		this.drivingLicense = drivingLicense;
+		this.emailAddress=emailAddress;
 	}
     
 	public String getName() {
@@ -60,6 +62,13 @@ public class Customer {
 	public void setDrivingLicense(String drivingLicense) {
 		this.drivingLicense = drivingLicense;
 	}
-    
+
+	public String getEmailAddress() {
+		return emailAddress;
+	}
+
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
+	}
     
 }

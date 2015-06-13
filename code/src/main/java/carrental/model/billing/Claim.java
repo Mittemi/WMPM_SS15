@@ -43,7 +43,7 @@ public class Claim implements Serializable {
     
     @XmlElement
     public BigDecimal getCosts() {
-        return costs;
+        return this.costs;
     }
 
     public void setCosts(BigDecimal costs) {
