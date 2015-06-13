@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by Constantin on 12.05.2015.
+ * Created by Constantin and Michael on 12.05.2015.
  */
 @Component
 public class CarInspectionRoute extends RouteBuilder {

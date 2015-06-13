@@ -31,7 +31,7 @@ public class CancelPickupRoute extends RouteBuilder {
 
         from("direct:pickupPoint.callRepair").process((p) -> {
             System.out.println("ESB: Send to repair center");
-        }).setHeader("protocolType", constant(PickupProtocol.class.getName().toString())).to("seda:queue:claimFixCenter");
+        }).setHeader("carId", simple("${body.getReservation().getCarId()}")).setHeader("claimsCnt+Protocol",simple("${body.getClaims().size()+1}")).setHeader("protocolType", constant(PickupProtocol.class.getName().toString())).to("seda:queue:claimFixCenter");
 
         from("direct:pickupPoint.callAvailability.available").process((p) -> {
             System.out.println("ESB: Set car as available");
