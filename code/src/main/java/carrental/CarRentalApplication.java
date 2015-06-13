@@ -24,6 +24,9 @@ import java.io.File;
 public class CarRentalApplication {
 
     public static void main(String[] args) {
+
+        activemqCleanup();
+
         ApplicationContext applicationContext = new SpringApplication(CarRentalApplication.class).run(args);
 
         //CLEAN-UP
@@ -33,6 +36,15 @@ public class CarRentalApplication {
         CamelSpringBootApplicationController applicationController =
                 applicationContext.getBean(CamelSpringBootApplicationController.class);
         applicationController.blockMainThread();
+    }
+
+    private static void activemqCleanup() {
+
+        File file = new File("activemq-data");
+
+        if(file.exists()) {
+            file.delete();
+        }
     }
 
     private static void cleanupFileSystem(ApplicationContext applicationContext) {

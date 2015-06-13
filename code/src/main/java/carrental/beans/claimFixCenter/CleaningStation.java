@@ -21,7 +21,7 @@ public class CleaningStation {
 
         Claim claim= claimDto.getClaim();
         Long carId= claimDto.getCarId();
-        System.out.println("Bean: CleaningStation fixed "+claim.getDescription() + " for car with ID="+ carId );
+        System.out.println("CleaningStation fixed "+claim.getDescription() + " for car with ID="+ carId );
         jmsTemplate.convertAndSend("claimFixAdapter", claimDto);
     }
 }

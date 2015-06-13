@@ -12,7 +12,7 @@ import java.util.List;
  * Created by Constantin on 15.05.2015.
  */
 public class CarQueue {
-    public static List<PickupProtocol> listOfPickups = Collections.synchronizedList(new LinkedList());
+    public static List<Long> listOfPickups = Collections.synchronizedList(new LinkedList());
     public static List<Reservation> listForClaims = Collections.synchronizedList(new LinkedList());
 
 }

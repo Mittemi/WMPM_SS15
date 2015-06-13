@@ -21,7 +21,7 @@ public class RefillStation {
 
         Claim claim= claimDto.getClaim();
         Long carId= claimDto.getCarId();
-        System.out.println("Bean: RefillStation fixed "+claim.getDescription() + " for car with ID="+ carId );
+        System.out.println("RefillStation fixed "+claim.getDescription() + " for car with ID="+ carId );
         jmsTemplate.convertAndSend("claimFixAdapter", claimDto);
     }
 }

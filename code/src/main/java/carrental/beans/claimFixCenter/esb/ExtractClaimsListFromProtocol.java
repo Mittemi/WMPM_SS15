@@ -19,7 +19,7 @@ public class ExtractClaimsListFromProtocol implements org.apache.camel.Processor
             List<Claim> claimsList = protocol.getClaims();
             System.out.println("ESB (ClaimFixCenter):Return Protocol arrived for car with ID=" + protocol.getReservation().getCarId() + " Claims to Fix: ");
             for (Claim claim : protocol.getClaims()) {
-                System.out.println("Type: " + claim.getClaimType() + " Description: " + claim.getDescription());
+                System.out.println("  -- Type: " + claim.getClaimType() + ";  Description: " + claim.getDescription());
             }
             exchange.getIn().setBody(claimsList);
         }

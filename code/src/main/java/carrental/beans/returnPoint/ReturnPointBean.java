@@ -1,10 +1,13 @@
 package carrental.beans.returnPoint;
 
-import carrental.model.pickupPoint.PickupProtocol;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;
+import carrental.model.pickupPoint.ReturnProtocol;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
+import java.util.LinkedList;
 
 /**
  * Created by Constantin on 13.06.2015.
@@ -15,12 +18,27 @@ public class ReturnPointBean {
     JmsTemplate jmsTemplate;
 
     @JmsListener(destination = "returnPoint.expectedReturns")
-    public void AddExpectedReturn(PickupProtocol protocol)
-    {
-            CarQueue.listOfPickups.add(protocol);
-            System.out.println("Return Point: New car queued for return by Pickup Point. Cars expected for return: ");
-            for(PickupProtocol pickup:CarQueue.listOfPickups) {
-                System.out.println("\n" + "Car ID: " + pickup.getReservation().getCarId());
-            }
+    public void AddExpectedReturn(ReturnProtocol returnProtocol) {
+
+        CarQueue.listOfPickups.add(returnProtocol.getReservation().getCarId());
+
+        System.out.println("Return Point: New car queued for return by Pickup Point. Cars expected for return: ");
+        for(Long pickup:CarQueue.listOfPickups) {
+            System.out.println("\n" + "  -- Car ID: " + pickup);
+        }
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+           // e.printStackTrace();
+        }
+        CarQueue.listOfPickups.remove(returnProtocol.getReservation().getCarId());
+
+
+        // required to simulate the csv generation for claims
+        CarQueue.listForClaims.add(returnProtocol.getReservation());
+
+        System.out.println("Car with id " + returnProtocol.getReservation().getCarId() + " arrived at return point");
+        jmsTemplate.convertAndSend("carToInspectQueue", returnProtocol);
     }
 }

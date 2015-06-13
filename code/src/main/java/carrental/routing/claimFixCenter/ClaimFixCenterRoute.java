@@ -41,13 +41,14 @@ public class ClaimFixCenterRoute extends RouteBuilder {
         }).to("seda:queue:claimFixAggregationPoint");
 
         //Receive Return Protocol with Meta info in the header about number of claims to fix
-        //wait till all claims are fixed then forward return Protocol to Billing Point
+        //wait till all claims are fixed then forward return Protocol to Billing Point or if
+        //from cancelPickup, then fix them without billing it to anyone!
         from("seda:queue:claimFixAggregationPoint")
                 .aggregate(header("carId"), new AggregationStrategyClaimFixes())
                 .completionSize(header("claimsCnt+Protocol")).process(new Processor() {
             @Override
             public void process(Exchange exchange) throws Exception {
-                System.out.println("ClaimFixCenter: All claims for car with ID=" + exchange.getIn().getHeader("carId") + " fixed.");
+                System.out.println("ESB (ClaimFixCenter): All claims for car with ID=" + exchange.getIn().getHeader("carId") + " fixed.");
             }
         })
                 .choice()
