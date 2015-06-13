@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.Random;
 
 import org.apache.camel.Exchange;
+import org.apache.camel.Handler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -46,10 +47,9 @@ public class BillingBean {
 	
 	private static RestTemplate restClient=new RestTemplate();
 	
-	
 	public void createInvoice(Exchange exchange) throws Exception{
 		ReturnProtocol protocol = exchange.getIn().getBody(ReturnProtocol.class);
-        System.out.println("Return Protocol arrived in Billing-Department, ID="+protocol.getId());
+        System.out.println("Billingpoint: Return Protocol with the ID="+protocol.getId()+"arrived in Billingpoint");
         
         //update the availabilityState of the returned car
         Car c=carRepo.findOne(protocol.getReservation().getCarId());
@@ -92,6 +92,8 @@ public class BillingBean {
         invoice.setCustomer("Max Muster");  //Sample value
         invoice.setAddress("DavidHumeStreet 12");  //Sample value
         exchange.getIn().setBody(invoice);
+        
+        System.out.println("Billingpoint: Invoice-calculation completed.");
 	}
 	
 	/**

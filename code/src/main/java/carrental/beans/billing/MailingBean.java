@@ -18,10 +18,10 @@ public class MailingBean {
 		CamelContext camelContext = exchange.getContext();
 		String destinationEmailAddress = (String) exchange.getProperty("receiverEmailAddress");
 		String receiverName = (String) exchange.getProperty("receiverName");
-		
-		final MailEndpoint ep = (MailEndpoint) camelContext.getEndpoint("smtp://mail.eclipso.de:587?password=RAW(12345678)&username=RAW(carrentalag@eclipso.at)");
+				
+		final MailEndpoint ep = (MailEndpoint) camelContext.getEndpoint("smtp://mail.eclipso.de:587?password=RAW(12345678)&username=RAW(carrentalag3@eclipso.at)");
         ep.getConfiguration().setProtocol("smtp");
-        ep.getConfiguration().setFrom("carrentalag@eclipso.at");
+        ep.getConfiguration().setFrom("carrentalag3@eclipso.at");
         ep.getConfiguration().setTo(destinationEmailAddress);
         
         Exchange exchangeMail=ep.createExchange();
@@ -34,5 +34,7 @@ public class MailingBean {
 		producer.start();
 		producer.process(exchangeMail); 
 		producer.stop();
+		
+		System.out.println("BillingPoint: E-Mail with Invoice.pdf sent to "+receiverName+" ("+destinationEmailAddress+")");
 	}
 }

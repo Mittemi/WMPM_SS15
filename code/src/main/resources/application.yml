@@ -1,7 +1,7 @@
 server:
      port: 9000
 spring:
-  profiles.active: default
+  profiles.active: alex
 logging:
   level:
     org:
