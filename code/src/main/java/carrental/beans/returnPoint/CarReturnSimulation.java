@@ -79,7 +79,7 @@ public class CarReturnSimulation {
         if(!CarQueue.listForClaims.isEmpty()) {
 
             Reservation reservation = CarQueue.listForClaims.get(0);
-            System.out.println("INFO: Generating claims list for " + reservation.getReservationId());
+            System.out.println("ReturnPoint: CarInspection: Claims list for car with ID=" + reservation.getCarId()+" saved to csv.");
             CarQueue.listForClaims.remove(reservation);
 
             List<Claim> claims = PickupBean.generateClaims();

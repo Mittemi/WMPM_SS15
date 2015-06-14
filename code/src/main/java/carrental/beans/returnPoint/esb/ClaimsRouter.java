@@ -20,12 +20,12 @@ public class ClaimsRouter implements Processor {
         if(claimsList.isEmpty())
         {
             exchange.getIn().setHeader("recipients","direct:billingPoint");
-            System.out.println("ReturnPoint: Car Inspection for CarId = "+ returnProtocol.getReservation().getCarId()+" : No Claims --> Billing Point");
+            System.out.println("ESB (RP): Car with ID="+ returnProtocol.getReservation().getCarId()+" : No Claims --> Billing Point");
         }
         else {
             exchange.getIn().setHeader("recipients", "seda:queue:claimFixCenter");
             exchange.getIn().setHeader("protocolType",ReturnProtocol.class.getName().toString());
-            System.out.println("ReturnPoint: Car Inspection for CarId = "+ returnProtocol.getReservation().getCarId()+" : Claims found --> ClaimFixCenter ");
+            System.out.println("ESB (RP) Car with ID= "+ returnProtocol.getReservation().getCarId()+" : Claims found --> ClaimFixCenter ");
         }
 
         exchange.getIn().setHeader("claimsCnt+Protocol",claimsList.size()+1);

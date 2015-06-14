@@ -9,7 +9,7 @@ public class ReservationTranslator {
 
     public Reservation process(carrental.model.reservation.Reservation reservation) {
 
-        System.out.println("PickupPoint: MessageTranslator Reservation (reservation) --> Reservation (pickupPoint) [ID: " + reservation.getId() + "]" );
+        System.out.println("ESB (PP)        : MessageTranslator Reservation (reservation) --> Reservation (pickupPoint) [ID: " + reservation.getId() + "]" );
         Reservation outputReservation = new Reservation();
 
         outputReservation.setCarId(reservation.getCar().getId());

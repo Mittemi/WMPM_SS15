@@ -30,7 +30,7 @@ public class StatisticsPromotionBean implements Processor {
                 .min(Comparator.comparing(item -> item.getValue()))
                 .get();
         System.out.println("Promotion: Car which is used the least of all: " + leastUsedCarEntry.getKey()
-                + ", just reserved: " + leastUsedCarEntry.getValue() +" times.");
+                + ", only reserved: " + leastUsedCarEntry.getValue() +" time(s).");
 
         //set least used car for further promotion activities
         exchange.getOut().setBody(leastUsedCarEntry.getKey(), Car.class);

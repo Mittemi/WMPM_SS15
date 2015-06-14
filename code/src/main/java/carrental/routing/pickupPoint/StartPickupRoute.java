@@ -38,7 +38,7 @@ public class StartPickupRoute extends RouteBuilder {
 
         // Application -> ESB
         from("activemq:queue:createPickupProtocolDoneQueue").process(p -> {
-            System.out.println("ESB (PP): PickupProtocol started");
+            System.out.println("ESB (PP): PickupProtocol finished.");
         }).to("direct:pickupPoint.PickupProtocol.created");
 
         // ESB -> Application
