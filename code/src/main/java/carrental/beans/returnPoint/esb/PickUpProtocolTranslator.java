@@ -17,7 +17,7 @@ public class PickUpProtocolTranslator {
         returnProtocol.setId(pickupProtocol.getReservation().getId());
         returnProtocol.setClaims(new LinkedList<>(pickupProtocol.getClaims()));
 
-        System.out.println("ESB - ReturnPoint: MessageTranslator PickupProtocol --> ReturnProtocol [ID: " + pickupProtocol.getId() + "]" );
+        System.out.println("ESB - ReturnPoint: MessageTranslator PickupProtocol --> ReturnProtocol [ID:for Car with ID=" + pickupProtocol.getReservation().getCarId() + "]" );
 
         return returnProtocol;
     }
