@@ -17,6 +17,9 @@ import carrental.CarRentalConfig;
 
 /**
  * Created by Alexander on 30.05.2015
+ * Mailing application for the sending of the previously calculated beans to the corresponding email-address.
+ * Makes use of camel's Mailing component.
+ * This bean is being processed on the clientside.
  */
 
 @Component

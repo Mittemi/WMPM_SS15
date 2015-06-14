@@ -7,6 +7,7 @@ import carrental.model.billing.Claim;
 
 /**
  * Created by Alexander on 28.05.2015
+ * Data-format which is processable by the BillingPoint's local applications.
  */
 
 public class ReturnProtocol {

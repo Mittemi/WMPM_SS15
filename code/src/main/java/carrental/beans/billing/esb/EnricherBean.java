@@ -12,6 +12,9 @@ import carrental.repository.reservation.CustomerRepository;
 
 /**
  * Created by Alexander on 13.06.2015
+ * Enricher EIP to enrich the exchanged object with necessary customer- and car-information 
+ * for the following invoice-calculation.
+ * This bean is being processed on the server.
  */
 
 @Component
@@ -25,7 +28,7 @@ public class EnricherBean {
 	public void enrich(Exchange exchange) throws Exception {
 		ReturnProtocol returnProtocol=exchange.getIn().getBody(ReturnProtocol.class);
 		
-        System.out.println("BillingPoint.Enricher: Enriching the exchange object with necessary customer-data and car-data.");
+        System.out.println("ESB (BP.Enricher): Enriching the exchange object with necessary customer-data and car-data.");
 		Customer customer = customerRepo.findOne(returnProtocol.getReservation().getCustomerId());
 		Car car=carRepo.findOne(returnProtocol.getReservation().getCarId());
 		
@@ -36,6 +39,6 @@ public class EnricherBean {
 		
 		exchange.getIn().setBody(exchangeWrapper);
     	
-		System.out.println("BillingPoint.Enricher: Exchanged object enriched with additional data.");
+		System.out.println("ESB (BP.Enricher): Exchanged object enriched with additional data.");
     }
 }

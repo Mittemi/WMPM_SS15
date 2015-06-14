@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * Created by Alexander on 06.06.2015.
+ * Stores all relevant information for the billing of a customer.
  */
 @Document(collection = "invoice")
 public class Invoice implements Serializable {

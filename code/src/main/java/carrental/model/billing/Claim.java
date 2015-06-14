@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 
 /**
  * Created by Michael & Alexander on 13.05.2015.
+ * Data-format which is processable by the BillingPoint's local applications.
  */
 public class Claim implements Serializable {
 

@@ -2,13 +2,19 @@ package carrental.model.billing;
 
 /**
  * Created by Alexander on 06.06.2015
+ * Wrapper-object necessary for the enrichment of the exchanged information along the billing camel-route and necessary
+ * for technical decoupling of the BillingPoint's applications from external applications.
+ * Stores input-information in it's original data formats, which aren't readable for the BillingPoint's systems, and output-information,
+ * which is the input-information, that was translated into data-formats, which are processable by the BillingPoints local applicatoins.
  */
 
 public class ExchangeWrapper {
+	//input information
 	private carrental.model.reservation.Customer in_customer;
 	private carrental.model.reservation.Car in_car;
 	private carrental.model.pickupPoint.ReturnProtocol in_returnProtocol;
 	
+	//output information
 	private carrental.model.billing.Customer out_customer;
 	private carrental.model.billing.Car out_car;
 	private carrental.model.billing.ReturnProtocol out_returnProtocol;

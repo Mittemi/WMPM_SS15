@@ -25,6 +25,9 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 /**
  * Created by Alexander on 23.05.2015
+ * Invoice-printing application. Prints an invoice in form of a PDF-File.
+ * Lists customer-details, contractual-details, detailed repair-costs tabulation, detailed driving-costs tabulation.
+ * This bean is being processed on the clientside.
  */
 
 @Component

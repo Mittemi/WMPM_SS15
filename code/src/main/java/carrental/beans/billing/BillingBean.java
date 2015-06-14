@@ -27,6 +27,9 @@ import carrental.model.billing.ReturnProtocol;
 
 /**
  * Created by Alexander
+ * Bean for the simulation of the invoice-calculating (local) application.
+ * Uses the exchanged wrapper object for the calculation of all relevant matters of expense.
+ * This bean is being processed on the clientside.
  */
 
 @Component
@@ -50,7 +53,6 @@ public class BillingBean {
         exchange.getIn().setBody(createInvoice(returnProtocol, customer, car));
         System.out.println("BillingPoint.Invoice_Calculator: Invoice-calculation completed.");
 	}
-	
 	
 	private Invoice createInvoice(ReturnProtocol returnProtocol, Customer customer, Car car) throws Exception{
 		
@@ -89,7 +91,7 @@ public class BillingBean {
 		Calendar c = Calendar.getInstance();
 		c.setTime(returnProtocol.getReturnDate()); 
 		int randomNumberOfDays = (int)(new Random().nextGaussian()*4 + 23);
-		c.add(Calendar.DATE, randomNumberOfDays); // Adding a randomNumberOfDays for simulationPurposes days
+		c.add(Calendar.DATE, randomNumberOfDays); // Adding a randomNumberOfDays for simulationPurposes 
 		Date newReturnDate=c.getTime();
 		return newReturnDate;
 	}
