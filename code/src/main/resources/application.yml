@@ -39,7 +39,11 @@ spring:
       name: carrental
   reservation:
     availabilityUrl: http://localhost:9000/availability
-
+  email:
+    smtpAddress: mail.eclipso.de
+    smtpUsername: carrentalag3@eclipso.at
+    smtpPassword: 12345678
+    smtpPort: 587
 ---
 spring:
   profiles: consti
@@ -70,6 +74,11 @@ spring:
       name: carrental
   reservation:
     availabilityUrl: http://localhost:9000/availability
+  email:
+    smtpAddress: mail.eclipso.de
+    smtpUsername: carrentalag3@eclipso.at
+    smtpPassword: 12345678
+    smtpPort: 587  
 ---
 spring:
   profiles: thi
@@ -100,6 +109,11 @@ spring:
       name: carrental
   reservation:
     availabilityUrl: http://localhost:9000/availability
+  email:
+    smtpAddress: mail.eclipso.de
+    smtpUsername: carrentalag3@eclipso.at
+    smtpPassword: 12345678
+    smtpPort: 587 
 ---
 spring:
   profiles: alex
@@ -130,4 +144,9 @@ spring:
       name: carrental
   reservation:
     availabilityUrl: http://localhost:9000/availability
+  email:
+    smtpAddress: mail.eclipso.de
+    smtpUsername: carrentalag3@eclipso.at
+    smtpPassword: 12345678
+    smtpPort: 587 
 

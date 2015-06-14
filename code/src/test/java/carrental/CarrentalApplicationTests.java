@@ -45,5 +45,8 @@ public class CarrentalApplicationTests {
 	public void testConfig() {
 		assertNotNull(carRentalConfig);
 		assertNotNull(carRentalConfig.getPickupPoint());
+		assertNotNull(carRentalConfig.getEmail());
 	}
+	
+	
 }

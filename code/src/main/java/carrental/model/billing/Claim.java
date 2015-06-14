@@ -6,10 +6,6 @@ import carrental.model.pickupPoint.ClaimType;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
-import org.springframework.stereotype.Component;
 
 /**
  * Created by Michael & Alexander on 13.05.2015.

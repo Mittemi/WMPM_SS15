@@ -26,9 +26,9 @@ public class CarRentalApplication {
     public static void main(String[] args) {
 
         activemqCleanup();
-
+        
         ApplicationContext applicationContext = new SpringApplication(CarRentalApplication.class).run(args);
-
+        
         //CLEAN-UP
         cleanupDatabase(applicationContext);
         cleanupFileSystem(applicationContext);
@@ -36,14 +36,32 @@ public class CarRentalApplication {
         CamelSpringBootApplicationController applicationController =
                 applicationContext.getBean(CamelSpringBootApplicationController.class);
         applicationController.blockMainThread();
+        
     }
 
     private static void activemqCleanup() {
-
+    	/*
         File file = new File("activemq-data");
 
         if(file.exists()) {
             file.delete();
+        }
+        */
+        String path="activemq-data/localhost/KahaDB";
+        String[] parts=path.split("/");
+        File index = new File(path);
+        
+        if(index!=null && index.list()!=null){
+	        String[]entries = index.list();
+	        for(String s: entries)
+	            new File(index.getPath(),s).delete();
+	        
+	        for(int i=parts.length-1;i>=0;i--){
+	        	String subPath="";
+	        	for(int j=0; j<=i;j++)
+	        		subPath+=parts[j]+"/";
+	        	new File(subPath).delete();
+	        }
         }
     }
 

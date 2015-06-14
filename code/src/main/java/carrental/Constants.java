@@ -15,7 +15,7 @@ public class Constants {
 
     public static final boolean ENABLE_CANCEL_PICKUP = true;
     
-    public static final Map<Enum,Double> servicePrices=new HashMap<Enum,Double>();
+    public static final Map<Enum<ClaimType>,Double> servicePrices=new HashMap<Enum<ClaimType>,Double>();
     
     static{
     	servicePrices.put(ClaimType.Paintwork, 350.50);
