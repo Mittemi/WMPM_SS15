@@ -24,7 +24,6 @@ public class EnricherBean {
 	
 	public void enrich(Exchange exchange) throws Exception {
 		ReturnProtocol returnProtocol=exchange.getIn().getBody(ReturnProtocol.class);
-		System.out.println("BillingPoint: Return Protocol with the ID="+returnProtocol.getId()+"arrived at Billingpoint");
 		
         System.out.println("BillingPoint.Enricher: Enriching the exchange object with necessary customer-data and car-data.");
 		Customer customer = customerRepo.findOne(returnProtocol.getReservation().getCustomerId());
